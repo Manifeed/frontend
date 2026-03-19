@@ -1,0 +1,117 @@
+.main {
+  --shell-gap: var(--space-3);
+}
+
+.actionPanel {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-secondary-strong);
+  font-size: var(--text-r-size);
+  font-weight: var(--text-r-weight);
+  line-height: var(--text-r-line-height);
+}
+
+.metaCount {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.meta strong {
+  color: var(--text-primary);
+  font-size: var(--text-b-size);
+  font-weight: var(--text-b-weight);
+  line-height: var(--text-b-line-height);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.filterPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.filterField {
+  min-width: 0;
+}
+
+.clearFiltersButton {
+  align-self: end;
+}
+
+.gridPanel {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.gridHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.gridHeader h2 {
+  margin: 0;
+}
+
+.gridHeader p {
+  margin: 0;
+  color: var(--text-secondary-strong);
+  font-size: var(--text-r-size);
+  font-weight: var(--text-r-weight);
+  line-height: var(--text-r-line-height);
+}
+
+.tileRows {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tileRow {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.emptyText {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 960px) {
+  .filterPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .clearFiltersButton {
+    justify-self: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .actions {
+    width: 100%;
+  }
+}

@@ -1,0 +1,49 @@
+.card {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-panel-muted);
+  backdrop-filter: blur(var(--effect-blur-md));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  overflow: hidden;
+  opacity: 0.8;
+}
+
+.card img {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  background: var(--color-heavenly-12);
+  opacity: 1;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.cardSelected {
+  opacity: 1;
+  border: 3px solid;
+  border-color: var(--border-strong);
+  background: var(--color-heavenly-20);
+  box-shadow: var(--shadow-soft);
+}
+
+.card:focus-visible {
+  outline: none;
+  box-shadow: var(--effect-focus-ring);
+}
