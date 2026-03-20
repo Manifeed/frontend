@@ -9,7 +9,6 @@ const NAV_ITEMS = [
   { href: "/", label: "Dashboard" },
   { href: "/rss", label: "RSS" },
   { href: "/sources", label: "Sources" },
-  { href: "/visualizer", label: "Visualizer" },
   { href: "/jobs", label: "Jobs" },
   { href: "/workers", label: "Workers" },
 ];

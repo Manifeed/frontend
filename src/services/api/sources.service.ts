@@ -2,8 +2,6 @@ import { apiRequest } from "@/services/api/client";
 import type {
   RssSourceDetail,
   RssSourceEmbeddingEnqueueRead,
-  RssSourceEmbeddingMapRead,
-  RssSourceEmbeddingNeighborhoodRead,
   RssSourcePageRead,
 } from "@/types/sources";
 
@@ -46,40 +44,4 @@ export async function enqueueRssSourceEmbeddings(): Promise<RssSourceEmbeddingEn
   return apiRequest<RssSourceEmbeddingEnqueueRead>("/sources/embeddings/enqueue", {
     method: "POST",
   });
-}
-
-export async function getRssSourceEmbeddingMap(params?: {
-  dateFrom?: string | null;
-  dateTo?: string | null;
-}): Promise<RssSourceEmbeddingMapRead> {
-  const searchParams = new URLSearchParams();
-  if (params?.dateFrom) {
-    searchParams.set("date_from", params.dateFrom);
-  }
-  if (params?.dateTo) {
-    searchParams.set("date_to", params.dateTo);
-  }
-  return apiRequest<RssSourceEmbeddingMapRead>(`/sources/visualizer?${searchParams.toString()}`);
-}
-
-export async function getRssSourceEmbeddingNeighbors(
-  sourceId: number,
-  params?: {
-    neighborLimit?: number;
-    dateFrom?: string | null;
-    dateTo?: string | null;
-  },
-): Promise<RssSourceEmbeddingNeighborhoodRead> {
-  const searchParams = new URLSearchParams({
-    neighbor_limit: String(params?.neighborLimit ?? 8),
-  });
-  if (params?.dateFrom) {
-    searchParams.set("date_from", params.dateFrom);
-  }
-  if (params?.dateTo) {
-    searchParams.set("date_to", params.dateTo);
-  }
-  return apiRequest<RssSourceEmbeddingNeighborhoodRead>(
-    `/sources/visualizer/${sourceId}/neighbors?${searchParams.toString()}`,
-  );
 }
