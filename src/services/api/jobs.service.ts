@@ -27,28 +27,28 @@ function buildPageQuery(options?: PageOptions): string {
 }
 
 export async function getJobsOverview(limit: number = 200): Promise<JobsOverviewRead> {
-  return apiRequest<JobsOverviewRead>(`/jobs?limit=${encodeURIComponent(String(limit))}`);
+  return apiRequest<JobsOverviewRead>(`/api/admin/jobs?limit=${encodeURIComponent(String(limit))}`);
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatusRead> {
-  return apiRequest<JobStatusRead>(`/jobs/${encodeURIComponent(jobId)}`);
+  return apiRequest<JobStatusRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}`);
 }
 
 export async function getJobTasks(jobId: string, options?: PageOptions): Promise<JobTaskRead[]> {
   return apiRequest<JobTaskRead[]>(
-    `/jobs/${encodeURIComponent(jobId)}/tasks${buildPageQuery(options)}`,
+    `/api/admin/jobs/${encodeURIComponent(jobId)}/tasks${buildPageQuery(options)}`,
   );
 }
 
 export async function getJobFeeds(jobId: string, options?: PageOptions): Promise<RssJobFeedRead[]> {
   return apiRequest<RssJobFeedRead[]>(
-    `/jobs/${encodeURIComponent(jobId)}/feeds${buildPageQuery(options)}`,
+    `/api/admin/jobs/${encodeURIComponent(jobId)}/feeds${buildPageQuery(options)}`,
   );
 }
 
 export async function getJobSources(jobId: string, options?: PageOptions): Promise<RssJobSourceRead[]> {
   return apiRequest<RssJobSourceRead[]>(
-    `/jobs/${encodeURIComponent(jobId)}/sources${buildPageQuery(options)}`,
+    `/api/admin/jobs/${encodeURIComponent(jobId)}/sources${buildPageQuery(options)}`,
   );
 }
 
@@ -57,12 +57,12 @@ export async function getJobEmbeddings(
   options?: PageOptions,
 ): Promise<EmbeddingJobResultRead[]> {
   return apiRequest<EmbeddingJobResultRead[]>(
-    `/jobs/${encodeURIComponent(jobId)}/embeddings${buildPageQuery(options)}`,
+    `/api/admin/jobs/${encodeURIComponent(jobId)}/embeddings${buildPageQuery(options)}`,
   );
 }
 
 export async function deleteJob(jobId: string): Promise<JobDeleteRead> {
-  return apiRequest<JobDeleteRead>(`/jobs/${encodeURIComponent(jobId)}`, {
+  return apiRequest<JobDeleteRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}`, {
     method: "DELETE",
   });
 }

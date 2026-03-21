@@ -12,14 +12,6 @@ export class ApiRequestError extends Error {
   }
 }
 
-function sanitizeBaseUrl(rawBaseUrl: string | undefined): string {
-  if (!rawBaseUrl) {
-    throw new Error("Missing NEXT_PUBLIC_API_URL");
-  }
-
-  return rawBaseUrl.replace(/\/+$/, "");
-}
-
 function getPayloadMessage(payload: unknown): string | null {
   if (!payload || typeof payload !== "object") {
     return null;
@@ -62,11 +54,11 @@ function buildRequestHeaders(init?: RequestInit): Headers {
 }
 
 export function getApiBaseUrl(): string {
-  return sanitizeBaseUrl(process.env.NEXT_PUBLIC_API_URL);
+  return "";
 }
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, {
+  const response = await fetch(path, {
     ...init,
     headers: buildRequestHeaders(init),
   });

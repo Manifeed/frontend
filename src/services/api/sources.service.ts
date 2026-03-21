@@ -20,9 +20,11 @@ function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
 
   let path = "/sources/";
   if (typeof feedId === "number") {
-    path = `/sources/feeds/${feedId}`;
+    path = `/api/admin/sources/feeds/${feedId}`;
   } else if (typeof companyId === "number") {
-    path = `/sources/companies/${companyId}`;
+    path = `/api/admin/sources/companies/${companyId}`;
+  } else {
+    path = "/api/admin/sources/";
   }
 
   const searchParams = new URLSearchParams({
@@ -37,11 +39,11 @@ export async function listRssSources(params?: ListRssSourcesParams): Promise<Rss
 }
 
 export async function getRssSourceById(sourceId: number): Promise<RssSourceDetail> {
-  return apiRequest<RssSourceDetail>(`/sources/${sourceId}`);
+  return apiRequest<RssSourceDetail>(`/api/admin/sources/${sourceId}`);
 }
 
 export async function enqueueRssSourceEmbeddings(): Promise<RssSourceEmbeddingEnqueueRead> {
-  return apiRequest<RssSourceEmbeddingEnqueueRead>("/sources/embeddings/enqueue", {
+  return apiRequest<RssSourceEmbeddingEnqueueRead>("/api/admin/sources/embeddings/enqueue", {
     method: "POST",
   });
 }

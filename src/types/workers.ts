@@ -2,6 +2,8 @@ export type WorkerTypeKind = "rss_scrapper" | "source_embedding";
 
 export type WorkerInstanceRead = {
   name: string;
+  owner_email: string | null;
+  api_key_label: string | null;
   processing_tasks: number;
   idle_ms: number;
   connected: boolean;

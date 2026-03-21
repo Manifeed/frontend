@@ -1,4 +1,4 @@
-import { apiRequest, getApiBaseUrl } from "@/services/api/client";
+import { apiRequest } from "@/services/api/client";
 import type {
   RssCompanyEnabledToggleRead,
   RssFeed,
@@ -25,15 +25,15 @@ export function buildRssIconUrl(iconUrl: string | null): string | null {
     return null;
   }
 
-  return `${getApiBaseUrl()}/rss/img/${encodedPath}`;
+  return `/api/admin/rss/img/${encodedPath}`;
 }
 
 export async function listRssFeeds(): Promise<RssFeed[]> {
-  return apiRequest<RssFeed[]>("/rss/");
+  return apiRequest<RssFeed[]>("/api/admin/rss/");
 }
 
 export async function syncRssFeeds(force = false): Promise<RssSyncRead> {
-  const path = force ? "/rss/sync?force=true" : "/rss/sync";
+  const path = force ? "/api/admin/rss/sync?force=true" : "/api/admin/rss/sync";
   return apiRequest<RssSyncRead>(path, {
     method: "POST",
   });
@@ -48,7 +48,7 @@ export async function ingestRssFeeds(feedIds?: number[]): Promise<RssScrapeJobQu
   }
 
   const queryString = searchParams.toString();
-  const path = queryString ? `/rss/ingest?${queryString}` : "/rss/ingest";
+  const path = queryString ? `/api/admin/rss/ingest?${queryString}` : "/api/admin/rss/ingest";
   return apiRequest<RssScrapeJobQueuedRead>(path, {
     method: "POST",
   });
@@ -58,7 +58,7 @@ export async function updateRssFeedEnabled(
   feedId: number,
   enabled: boolean,
 ): Promise<RssFeedEnabledToggleRead> {
-  return apiRequest<RssFeedEnabledToggleRead>(`/rss/feeds/${feedId}/enabled`, {
+  return apiRequest<RssFeedEnabledToggleRead>(`/api/admin/rss/feeds/${feedId}/enabled`, {
     method: "PATCH",
     body: JSON.stringify({ enabled }),
   });
@@ -68,7 +68,7 @@ export async function updateRssCompanyEnabled(
   companyId: number,
   enabled: boolean,
 ): Promise<RssCompanyEnabledToggleRead> {
-  return apiRequest<RssCompanyEnabledToggleRead>(`/rss/companies/${companyId}/enabled`, {
+  return apiRequest<RssCompanyEnabledToggleRead>(`/api/admin/rss/companies/${companyId}/enabled`, {
     method: "PATCH",
     body: JSON.stringify({ enabled }),
   });

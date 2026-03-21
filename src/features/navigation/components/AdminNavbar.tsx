@@ -6,11 +6,12 @@ import { usePathname } from "next/navigation";
 import styles from "./AdminNavbar.module.css";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Dashboard" },
-  { href: "/rss", label: "RSS" },
-  { href: "/sources", label: "Sources" },
-  { href: "/jobs", label: "Jobs" },
-  { href: "/workers", label: "Workers" },
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/rss", label: "RSS" },
+  { href: "/admin/sources", label: "Sources" },
+  { href: "/admin/jobs", label: "Jobs" },
+  { href: "/admin/workers", label: "Workers" },
+  { href: "/admin/users", label: "Users" },
 ];
 
 function isActiveRoute(pathname: string | null, href: string): boolean {

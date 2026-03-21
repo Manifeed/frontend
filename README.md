@@ -1,12 +1,12 @@
-# Manifeed Frontend Admin
+# Manifeed Frontend
 
-Repo frontend de la console d'administration Manifeed. Il contient l'application Next.js utilisee pour piloter le backend, suivre les jobs et observer les workers.
+Repo frontend Next.js de Manifeed. Il contient la landing publique, les parcours `login/signup`, l'espace `app` pour les utilisateurs connectes et l'espace `admin` pour la console d'administration.
 
 ## Demarrage local
 
 ```bash
 yarn install
-NEXT_PUBLIC_API_URL=http://localhost:8000 yarn dev
+BACKEND_INTERNAL_URL=http://127.0.0.1:8000 yarn dev
 ```
 
 Autres commandes :
@@ -26,6 +26,6 @@ yarn start
 
 ## Place dans le multi-repo
 
-- `../infra` fournit la stack Docker locale et expose `NEXT_PUBLIC_API_URL_ADMIN`.
+- `../infra` fournit la stack Docker locale et expose `BACKEND_INTERNAL_URL_ADMIN`.
 - `../api` stocke `openapi.json`, la source de verite publiee pour le contrat backend.
 - `src/types/` reste pour l'instant la projection locale des contrats cote frontend.
