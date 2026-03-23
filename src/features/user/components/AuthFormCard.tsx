@@ -18,6 +18,7 @@ type AuthFormCardProps = {
   action: (state: AuthFormState, formData: FormData) => Promise<AuthFormState>;
   alternativeHref: string;
   alternativeLabel: string;
+  showPseudo?: boolean;
   nextPath?: string | null;
 };
 
@@ -39,6 +40,7 @@ export function AuthFormCard({
   action,
   alternativeHref,
   alternativeLabel,
+  showPseudo = false,
   nextPath,
 }: AuthFormCardProps) {
   const [state, formAction] = useFormState(action, INITIAL_STATE);
@@ -52,6 +54,12 @@ export function AuthFormCard({
         </div>
 
         {nextPath ? <input type="hidden" name="next" value={nextPath} /> : null}
+
+        {showPseudo ? (
+          <Field label="Pseudo" htmlFor="pseudo">
+            <TextInput id="pseudo" name="pseudo" autoComplete="nickname" required />
+          </Field>
+        ) : null}
 
         <Field label="Email" htmlFor="email">
           <TextInput id="email" name="email" type="email" autoComplete="email" required />

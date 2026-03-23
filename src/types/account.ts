@@ -5,10 +5,19 @@ export type AccountMeRead = {
   user: AuthenticatedUser;
 };
 
+export type AccountProfileUpdateRequest = {
+  pseudo: string;
+};
+
+export type AccountProfileUpdateRead = {
+  user: AuthenticatedUser;
+};
+
 export type UserApiKeyRead = {
   id: number;
   label: string;
   worker_type: WorkerTypeKind;
+  worker_name: string;
   key_prefix: string;
   last_used_at: string | null;
   revoked_at: string | null;
@@ -29,6 +38,7 @@ export type AccountWorkerRead = {
   label: string;
   worker_type: WorkerTypeKind;
   worker_name: string;
+  worker_version: string | null;
   processing_tasks: number;
   idle_ms: number;
   connected: boolean;

@@ -3,6 +3,7 @@ export type UserRole = "user" | "admin";
 export type AuthenticatedUser = {
   id: number;
   email: string;
+  pseudo: string;
   role: UserRole;
   is_active: boolean;
   api_access_enabled: boolean;

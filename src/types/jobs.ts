@@ -14,6 +14,7 @@ export type JobStatusRead = {
   job_id: string;
   job_kind: WorkerJobKind;
   status: WorkerJobStatus;
+  worker_version: string | null;
   requested_at: string;
   started_at: string | null;
   finished_at: string | null;
@@ -76,8 +77,7 @@ export type EmbeddingJobResultRead = {
   title: string;
   summary: string | null;
   status: EmbeddingItemStatus;
-  embedding_model_id: number;
-  model_code: string;
+  worker_version: string;
   worker_id: string | null;
   created_at: string | null;
   embedding_dimensions: number | null;

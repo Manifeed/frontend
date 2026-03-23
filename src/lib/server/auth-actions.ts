@@ -24,45 +24,49 @@ export async function loginAction(
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
   const nextPath = String(formData.get("next") ?? "") || null;
+  let payload: AuthLoginRead;
 
   try {
-    const payload = await backendRequest<AuthLoginRead>("/auth/login", {
+    payload = await backendRequest<AuthLoginRead>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     }, { sessionToken: null });
-    cookies().set(SESSION_COOKIE_NAME, payload.session_token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      expires: new Date(payload.expires_at),
-    });
-    redirect(resolveRedirectTarget(nextPath, payload.user.role));
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Unable to sign in",
     };
   }
+
+  cookies().set(SESSION_COOKIE_NAME, payload.session_token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    expires: new Date(payload.expires_at),
+  });
+  redirect(resolveRedirectTarget(nextPath, payload.user.role));
 }
 
 export async function signupAction(
   _previousState: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
+  const pseudo = String(formData.get("pseudo") ?? "");
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
 
   try {
     await backendRequest("/auth/register", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ pseudo, email, password }),
     }, { sessionToken: null });
-    redirect("/login?registered=1");
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Unable to create account",
     };
   }
+
+  redirect("/login?registered=1");
 }
 
 export async function logoutAction(): Promise<void> {

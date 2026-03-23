@@ -16,6 +16,7 @@ export default async function SignupPage() {
         action={signupAction}
         alternativeHref="/login"
         alternativeLabel="Already registered? Sign in."
+        showPseudo
       />
     </main>
   );

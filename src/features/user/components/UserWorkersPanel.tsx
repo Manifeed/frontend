@@ -27,6 +27,7 @@ export function UserWorkersPanel() {
             <h3>{item.label}</h3>
             <p>Worker: {item.worker_name}</p>
             <p>Type: {item.worker_type}</p>
+            <p>Version: {item.worker_version ?? "n/a"}</p>
             <p>Connected: {item.connected ? "yes" : "no"}</p>
             <p>Active: {item.active ? "yes" : "no"}</p>
             <p>Pending tasks: {item.processing_tasks}</p>

@@ -222,6 +222,7 @@ export default function AdminWorkersPage() {
                     <thead>
                       <tr>
                         <th>Name</th>
+                        <th>Version</th>
                         <th>Claims</th>
                         <th>Idle</th>
                         <th>Connection</th>
@@ -236,6 +237,7 @@ export default function AdminWorkersPage() {
                       {worker.workers.map((workerInstance) => (
                         <tr key={workerInstance.name}>
                           <td>{workerInstance.name}</td>
+                          <td>{workerInstance.worker_version ?? "n/a"}</td>
                           <td>{formatInteger(workerInstance.processing_tasks)}</td>
                           <td>{formatIdleDuration(workerInstance.idle_ms)}</td>
                           <td>

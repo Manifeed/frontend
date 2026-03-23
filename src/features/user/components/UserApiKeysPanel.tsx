@@ -110,6 +110,7 @@ export function UserApiKeysPanel({ apiAccessEnabled }: Props) {
           <Surface key={item.id} tone="soft" padding="md">
             <h3>{item.label}</h3>
             <p>Scope: {item.worker_type}</p>
+            <p>Generated worker name: {item.worker_name}</p>
             <p>Prefix: {item.key_prefix}</p>
             <p>Last used: {item.last_used_at ?? "never"}</p>
             <Button variant="ghost" onClick={() => void handleRevoke(item.id)}>

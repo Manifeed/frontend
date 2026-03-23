@@ -1018,7 +1018,7 @@ export default function AdminJobsPage() {
                   <th>Task</th>
                   <th>Source</th>
                   <th>Status</th>
-                  <th>Model</th>
+                  <th>Version</th>
                   <th>Dimensions</th>
                   <th>Worker</th>
                   <th>Created</th>
@@ -1038,7 +1038,7 @@ export default function AdminJobsPage() {
                         {embedding.status}
                       </Badge>
                     </td>
-                    <td>{embedding.model_code}</td>
+                    <td>{embedding.worker_version}</td>
                     <td>{formatInteger(embedding.embedding_dimensions)}</td>
                     <td>{embedding.worker_id ?? "n/a"}</td>
                     <td>{formatSourceDate(embedding.created_at, "full")}</td>
@@ -1240,6 +1240,11 @@ export default function AdminJobsPage() {
                   <p>
                     Finalisé: <strong>{formatSourceDate(selectedJob.finalized_at, "full")}</strong>
                   </p>
+                  {selectedJob.worker_version ? (
+                    <p>
+                      Version worker: <strong>{selectedJob.worker_version}</strong>
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className={styles.detailActions}>

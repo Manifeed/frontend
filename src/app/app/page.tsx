@@ -12,6 +12,7 @@ export default async function UserHomePage() {
       />
       <Surface tone="gradient" padding="lg">
         <h2>{session.user.email}</h2>
+        <p>Pseudo: {session.user.pseudo}</p>
         <p>Role: {session.user.role}</p>
         <p>API access: {session.user.api_access_enabled ? "enabled" : "disabled"}</p>
       </Surface>
