@@ -10,7 +10,6 @@ const NAV_ITEMS = [
   { href: "/admin/rss", label: "RSS" },
   { href: "/admin/sources", label: "Sources" },
   { href: "/admin/jobs", label: "Jobs" },
-  { href: "/admin/workers", label: "Workers" },
   { href: "/admin/users", label: "Users" },
 ];
 

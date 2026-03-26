@@ -557,7 +557,6 @@ export default function AdminSourcesPage() {
                     sourceId={source.id}
                     title={source.title}
                     summary={source.summary}
-                    author={source.author}
                     imageUrl={source.image_url}
                     companyNames={source.company_names}
                     publishedAt={source.published_at}

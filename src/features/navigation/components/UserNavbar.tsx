@@ -9,7 +9,6 @@ const NAV_ITEMS = [
   { href: "/app", label: "Overview" },
   { href: "/app/profile", label: "Profile" },
   { href: "/app/api-keys", label: "API Keys" },
-  { href: "/app/workers", label: "Workers" },
 ];
 
 function isActiveRoute(pathname: string | null, href: string): boolean {

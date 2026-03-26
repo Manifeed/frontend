@@ -6,7 +6,6 @@ type SourceCardProps = {
   sourceId: number;
   title: string;
   summary: string | null;
-  author: string | null;
   imageUrl: string | null;
   companyNames: string[];
   publishedAt: string | null;
@@ -29,7 +28,6 @@ export function SourceCard({
   sourceId,
   title,
   summary,
-  author,
   imageUrl,
   companyNames,
   publishedAt,
@@ -37,7 +35,6 @@ export function SourceCard({
   className,
 }: SourceCardProps) {
   const displayCompanyName = getCompanyName(companyNames);
-  const displayAuthor = author?.trim() ?? "";
   const publishedDate = formatSourceDate(publishedAt, "split");
   const bannerUrl = imageUrl?.trim() ?? "";
   const hasBanner = bannerUrl.length > 0;
@@ -57,7 +54,6 @@ export function SourceCard({
 
       <div className={styles.body}>
         <p className={styles.company}>{displayCompanyName}.</p>
-        {displayAuthor ? <p className={styles.author}>By {displayAuthor}.</p> : null}
         <div className={styles.contentContainer}>
           <h3>{title}</h3>
           <p className={styles.summary}>{summary ?? "No summary available."}</p>

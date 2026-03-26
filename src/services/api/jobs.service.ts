@@ -1,12 +1,8 @@
 import { apiRequest } from "@/services/api/client";
 import type {
-  EmbeddingJobResultRead,
-  JobDeleteRead,
   JobsOverviewRead,
   JobStatusRead,
   JobTaskRead,
-  RssJobFeedRead,
-  RssJobSourceRead,
 } from "@/types/jobs";
 
 type PageOptions = {
@@ -38,31 +34,4 @@ export async function getJobTasks(jobId: string, options?: PageOptions): Promise
   return apiRequest<JobTaskRead[]>(
     `/api/admin/jobs/${encodeURIComponent(jobId)}/tasks${buildPageQuery(options)}`,
   );
-}
-
-export async function getJobFeeds(jobId: string, options?: PageOptions): Promise<RssJobFeedRead[]> {
-  return apiRequest<RssJobFeedRead[]>(
-    `/api/admin/jobs/${encodeURIComponent(jobId)}/feeds${buildPageQuery(options)}`,
-  );
-}
-
-export async function getJobSources(jobId: string, options?: PageOptions): Promise<RssJobSourceRead[]> {
-  return apiRequest<RssJobSourceRead[]>(
-    `/api/admin/jobs/${encodeURIComponent(jobId)}/sources${buildPageQuery(options)}`,
-  );
-}
-
-export async function getJobEmbeddings(
-  jobId: string,
-  options?: PageOptions,
-): Promise<EmbeddingJobResultRead[]> {
-  return apiRequest<EmbeddingJobResultRead[]>(
-    `/api/admin/jobs/${encodeURIComponent(jobId)}/embeddings${buildPageQuery(options)}`,
-  );
-}
-
-export async function deleteJob(jobId: string): Promise<JobDeleteRead> {
-  return apiRequest<JobDeleteRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}`, {
-    method: "DELETE",
-  });
 }
