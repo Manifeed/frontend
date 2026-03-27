@@ -535,10 +535,6 @@ export default function AdminJobsPage() {
               </Surface>
 
               {jobStatusError ? <Notice tone="danger">{jobStatusError}</Notice> : null}
-              <Notice tone="info">
-                Les vues détaillées feeds, sources et embeddings ont été retirées. Cette page expose
-                uniquement l’état du job et la file de tasks encore supportés par l’API.
-              </Notice>
 
               <Surface className={styles.section} padding="md">
                 <div className={styles.panelHeader}>

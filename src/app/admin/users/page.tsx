@@ -6,7 +6,7 @@ export default function AdminUsersPage() {
     <PageShell size="wide">
       <PageHeader
         title="Users"
-        description="Manage roles, account activity, and API access activation."
+        description="Filter users by role and status, then manage account activity and API access."
       />
       <AdminUsersPanel />
     </PageShell>

@@ -48,7 +48,7 @@ export default async function LandingPage() {
           <h2>What changed</h2>
           <p className={styles.sideCopy}>
             Public signup creates a standard account. Admins can activate API access and manage
-            operator privileges from the admin area.
+            account activity from the admin area.
           </p>
           <div className={styles.sideList}>
             <div className={styles.sideItem}>
@@ -57,7 +57,7 @@ export default async function LandingPage() {
             </div>
             <div className={styles.sideItem}>
               <strong>Admins</strong>
-              RSS, sources, jobs, worker monitoring, and user governance.
+              RSS, sources, jobs, worker monitoring, and user oversight.
             </div>
             <div className={styles.sideItem}>
               <strong>Workers</strong>
