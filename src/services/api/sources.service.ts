@@ -1,9 +1,5 @@
 import { apiRequest } from "@/services/api/client";
-import type {
-  RssSourceDetail,
-  RssSourceEmbeddingEnqueueRead,
-  RssSourcePageRead,
-} from "@/types/sources";
+import type { RssSourceDetail, RssSourcePageRead } from "@/types/sources";
 
 type ListRssSourcesParams = {
   limit?: number;
@@ -40,10 +36,4 @@ export async function listRssSources(params?: ListRssSourcesParams): Promise<Rss
 
 export async function getRssSourceById(sourceId: number): Promise<RssSourceDetail> {
   return apiRequest<RssSourceDetail>(`/api/admin/sources/${sourceId}`);
-}
-
-export async function enqueueRssSourceEmbeddings(): Promise<RssSourceEmbeddingEnqueueRead> {
-  return apiRequest<RssSourceEmbeddingEnqueueRead>("/api/admin/sources/embeddings/enqueue", {
-    method: "POST",
-  });
 }

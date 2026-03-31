@@ -12,13 +12,16 @@ import {
 import { PageHeader, PageShell, PopInfo, Surface, type PopInfoType } from "@/components";
 import { RssSyncPanel } from "@/features/rss/components/RssSyncPanel";
 import {
-  ingestRssFeeds,
+  createRssScrapeJob,
+} from "@/services/api/jobs.service";
+import {
   listRssFeeds,
   syncRssFeeds,
   updateRssCompanyEnabled,
   updateRssFeedEnabled,
 } from "@/services/api/rss.service";
-import type { RssCompany, RssFeed, RssScrapeJobQueuedRead, RssSyncRead } from "@/types/rss";
+import type { JobEnqueueRead } from "@/types/jobs";
+import type { RssCompany, RssFeed, RssSyncRead } from "@/types/rss";
 
 import styles from "./page.module.css";
 
@@ -82,13 +85,13 @@ function formatSyncSummary(syncResult: RssSyncRead): string {
   return parts.join(" | ");
 }
 
-function formatIngestSummary(ingestResult: RssScrapeJobQueuedRead): string {
+function formatIngestSummary(ingestResult: JobEnqueueRead): string {
   return [
     `job=${ingestResult.job_id.slice(0, 8)}`,
     `kind=${ingestResult.job_kind}`,
     `status=${ingestResult.status}`,
     `tasks=${ingestResult.tasks_total}`,
-    `feeds=${ingestResult.feeds_total}`,
+    `items=${ingestResult.items_total}`,
     "mode=ingest",
   ].join(" | ");
 }
@@ -187,7 +190,7 @@ export default function AdminRssPage() {
     setIngesting(true);
 
     try {
-      const payload = await ingestRssFeeds();
+      const payload = await createRssScrapeJob();
       showPopInfo(
         "Last ingest result",
         formatIngestSummary(payload),

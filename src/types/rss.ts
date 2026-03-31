@@ -49,19 +49,3 @@ export type RssFeedCheckResultRead = {
 };
 
 export type RssFeedCheckRead = RssFeedCheckResultRead[];
-
-export type RssScrapeJobKind = "rss_scrape";
-export type RssScrapeJobStatus =
-  | "queued"
-  | "processing"
-  | "completed"
-  | "completed_with_errors"
-  | "failed";
-
-export type RssScrapeJobQueuedRead = {
-  job_id: string;
-  job_kind: RssScrapeJobKind;
-  status: RssScrapeJobStatus;
-  tasks_total: number;
-  feeds_total: number;
-};

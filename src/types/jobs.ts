@@ -39,3 +39,12 @@ export type JobTaskRead = {
   item_success: number;
   item_error: number;
 };
+
+export type JobEnqueueRead = {
+  job_id: string;
+  job_kind: WorkerJobKind;
+  status: WorkerJobStatus;
+  worker_version: string | null;
+  tasks_total: number;
+  items_total: number;
+};

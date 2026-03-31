@@ -27,7 +27,3 @@ export type RssSourceDetail = {
   company_names: string[];
   feed_sections: string[];
 };
-
-export type RssSourceEmbeddingEnqueueRead = {
-  queued_sources: number;
-};

@@ -1,5 +1,6 @@
 import { apiRequest } from "@/services/api/client";
 import type {
+  JobEnqueueRead,
   JobsOverviewRead,
   JobStatusRead,
   JobTaskRead,
@@ -34,4 +35,24 @@ export async function getJobTasks(jobId: string, options?: PageOptions): Promise
   return apiRequest<JobTaskRead[]>(
     `/api/admin/jobs/${encodeURIComponent(jobId)}/tasks${buildPageQuery(options)}`,
   );
+}
+
+export async function createRssScrapeJob(feedIds?: number[]): Promise<JobEnqueueRead> {
+  return apiRequest<JobEnqueueRead>("/api/admin/jobs/rss-scrape", {
+    method: "POST",
+    body: JSON.stringify({
+      feed_ids: feedIds ?? [],
+    }),
+  });
+}
+
+export async function createSourceEmbeddingJob(
+  reembedModelMismatches: boolean = false,
+): Promise<JobEnqueueRead> {
+  return apiRequest<JobEnqueueRead>("/api/admin/jobs/source-embedding", {
+    method: "POST",
+    body: JSON.stringify({
+      reembed_model_mismatches: reembedModelMismatches,
+    }),
+  });
 }

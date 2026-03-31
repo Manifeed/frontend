@@ -3,7 +3,6 @@ import type {
   RssCompanyEnabledToggleRead,
   RssFeed,
   RssFeedEnabledToggleRead,
-  RssScrapeJobQueuedRead,
   RssSyncRead,
 } from "@/types/rss";
 
@@ -35,21 +34,6 @@ export async function listRssFeeds(): Promise<RssFeed[]> {
 export async function syncRssFeeds(force = false): Promise<RssSyncRead> {
   const path = force ? "/api/admin/rss/sync?force=true" : "/api/admin/rss/sync";
   return apiRequest<RssSyncRead>(path, {
-    method: "POST",
-  });
-}
-
-export async function ingestRssFeeds(feedIds?: number[]): Promise<RssScrapeJobQueuedRead> {
-  const searchParams = new URLSearchParams();
-  if (feedIds) {
-    for (const feedId of feedIds) {
-      searchParams.append("feed_ids", String(feedId));
-    }
-  }
-
-  const queryString = searchParams.toString();
-  const path = queryString ? `/api/admin/rss/ingest?${queryString}` : "/api/admin/rss/ingest";
-  return apiRequest<RssScrapeJobQueuedRead>(path, {
     method: "POST",
   });
 }

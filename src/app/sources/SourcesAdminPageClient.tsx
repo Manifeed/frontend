@@ -3,6 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
+  createRssScrapeJob,
+  createSourceEmbeddingJob,
+} from "@/services/api/jobs.service";
+import {
   Button,
   Field,
   Notice,
@@ -15,18 +19,11 @@ import {
   Surface,
   type PopInfoType,
 } from "@/components";
-import { ingestRssFeeds, listRssFeeds } from "@/services/api/rss.service";
-import {
-  enqueueRssSourceEmbeddings,
-  getRssSourceById,
-  listRssSources,
-} from "@/services/api/sources.service";
-import type { RssFeed, RssScrapeJobQueuedRead } from "@/types/rss";
-import type {
-  RssSourceDetail,
-  RssSourceEmbeddingEnqueueRead,
-  RssSourcePageRead,
-} from "@/types/sources";
+import { listRssFeeds } from "@/services/api/rss.service";
+import { getRssSourceById, listRssSources } from "@/services/api/sources.service";
+import type { JobEnqueueRead } from "@/types/jobs";
+import type { RssFeed } from "@/types/rss";
+import type { RssSourceDetail, RssSourcePageRead } from "@/types/sources";
 
 import styles from "./page.module.css";
 
@@ -52,18 +49,24 @@ type BufferedSourceItem = {
   index: number;
 };
 
-function formatIngestSummary(result: RssScrapeJobQueuedRead): string {
+function formatIngestSummary(result: JobEnqueueRead): string {
   return [
     `job=${result.job_id.slice(0, 8)}`,
     `kind=${result.job_kind}`,
     `status=${result.status}`,
     `tasks=${result.tasks_total}`,
-    `feeds=${result.feeds_total}`,
+    `items=${result.items_total}`,
   ].join(" | ");
 }
 
-function formatEmbeddingEnqueueSummary(result: RssSourceEmbeddingEnqueueRead): string {
-  return `queued=${result.queued_sources}`;
+function formatEmbeddingEnqueueSummary(result: JobEnqueueRead): string {
+  return [
+    `job=${result.job_id.slice(0, 8)}`,
+    `kind=${result.job_kind}`,
+    `status=${result.status}`,
+    `tasks=${result.tasks_total}`,
+    `items=${result.items_total}`,
+  ].join(" | ");
 }
 
 function getFeedLabel(feed: RssFeed): string {
@@ -242,7 +245,7 @@ export default function AdminSourcesPage() {
   const handleIngest = useCallback(async () => {
     setIngestingSources(true);
     try {
-      const payload = await ingestRssFeeds();
+      const payload = await createRssScrapeJob();
       showPopInfo(
         "Last ingest result",
         formatIngestSummary(payload),
@@ -260,7 +263,7 @@ export default function AdminSourcesPage() {
   const handleEmbedSources = useCallback(async () => {
     setEmbeddingSources(true);
     try {
-      const payload = await enqueueRssSourceEmbeddings();
+      const payload = await createSourceEmbeddingJob();
       showPopInfo(
         "Embedding queue result",
         formatEmbeddingEnqueueSummary(payload),
