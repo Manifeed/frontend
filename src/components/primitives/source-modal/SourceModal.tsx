@@ -1,4 +1,4 @@
-import type { RssSourceDetail } from "@/types/sources";
+import type { RssSourceAuthor, RssSourceDetail } from "@/types/sources";
 import { formatSourceDate } from "@/utils/date";
 
 import { Notice } from "../../feedback/notice";
@@ -11,6 +11,7 @@ type SourceModalProps = {
   loading: boolean;
   error: string | null;
   onClose: () => void;
+  onAuthorSelect: (author: RssSourceAuthor) => void;
 };
 
 function getCompanyName(companyNames: string[]): string {
@@ -29,19 +30,12 @@ function formatCompanyLabel(companyNames: string[]): string {
   return `${candidate}.`;
 }
 
-function formatAuthor(author: string | null): string {
-  const candidate = author?.trim() ?? "";
-  if (!candidate) {
-    return "Unknown author";
-  }
-  return candidate;
-}
-
 export function SourceModal({
   sourceDetail,
   loading,
   error,
   onClose,
+  onAuthorSelect,
 }: SourceModalProps) {
   const publishedAt = sourceDetail ? formatSourceDate(sourceDetail.published_at, "full") : "n/a";
 
@@ -96,8 +90,24 @@ export function SourceModal({
               <p className={styles.summary}>{sourceDetail.summary ?? "No summary available."}</p>
 
               <section className={styles.sectionBlock}>
-                <h4>Author</h4>
-                <p className={styles.metaText}>{formatAuthor(sourceDetail.author)}</p>
+                <h4>Authors</h4>
+                {sourceDetail.authors.length === 0 ? (
+                  <p className={styles.emptyText}>Unknown author.</p>
+                ) : (
+                  <div className={styles.authorTags}>
+                    {sourceDetail.authors.map((author) => (
+                      <Button
+                        key={author.id}
+                        variant="chip"
+                        size="sm"
+                        className={styles.authorButton}
+                        onClick={() => onAuthorSelect(author)}
+                      >
+                        {author.name}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </section>
 
               <section className={styles.sectionBlock}>

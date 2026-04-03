@@ -6,6 +6,7 @@ type ListRssSourcesParams = {
   offset?: number;
   feedId?: number | null;
   companyId?: number | null;
+  authorId?: number | null;
 };
 
 function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
@@ -13,6 +14,7 @@ function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
   const offset = params?.offset ?? 0;
   const feedId = params?.feedId;
   const companyId = params?.companyId;
+  const authorId = params?.authorId;
 
   let path = "/sources/";
   if (typeof feedId === "number") {
@@ -27,6 +29,9 @@ function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
     limit: String(limit),
     offset: String(offset),
   });
+  if (typeof authorId === "number") {
+    searchParams.set("author_id", String(authorId));
+  }
   return `${path}?${searchParams.toString()}`;
 }
 

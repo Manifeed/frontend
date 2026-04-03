@@ -1,8 +1,13 @@
+export type RssSourceAuthor = {
+  id: number;
+  name: string;
+};
+
 export type RssSourceListItem = {
   id: number;
   title: string;
   summary: string | null;
-  author: string | null;
+  authors: RssSourceAuthor[];
   url: string;
   published_at: string | null;
   image_url: string | null;
@@ -20,7 +25,7 @@ export type RssSourceDetail = {
   id: number;
   title: string;
   summary: string | null;
-  author: string | null;
+  authors: RssSourceAuthor[];
   url: string;
   published_at: string | null;
   image_url: string | null;

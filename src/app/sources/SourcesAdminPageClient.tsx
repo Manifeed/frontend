@@ -23,7 +23,7 @@ import { listRssFeeds } from "@/services/api/rss.service";
 import { getRssSourceById, listRssSources } from "@/services/api/sources.service";
 import type { JobEnqueueRead } from "@/types/jobs";
 import type { RssFeed } from "@/types/rss";
-import type { RssSourceDetail, RssSourcePageRead } from "@/types/sources";
+import type { RssSourceAuthor, RssSourceDetail, RssSourcePageRead } from "@/types/sources";
 
 import styles from "./page.module.css";
 
@@ -95,6 +95,7 @@ export default function AdminSourcesPage() {
   const [embeddingSources, setEmbeddingSources] = useState<boolean>(false);
   const [selectedFeedId, setSelectedFeedId] = useState<number | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+  const [selectedAuthor, setSelectedAuthor] = useState<RssSourceAuthor | null>(null);
   const [popInfo, setPopInfo] = useState<PopInfoState | null>(null);
 
   const [selectedSourceId, setSelectedSourceId] = useState<number | null>(null);
@@ -131,6 +132,7 @@ export default function AdminSourcesPage() {
           offset,
           feedId: selectedFeedId,
           companyId: selectedCompanyId,
+          authorId: selectedAuthor?.id ?? null,
         });
         setSourcesPage(payload);
       } catch (error) {
@@ -141,7 +143,7 @@ export default function AdminSourcesPage() {
         setLoadingSources(false);
       }
     },
-    [selectedCompanyId, selectedFeedId],
+    [selectedAuthor?.id, selectedCompanyId, selectedFeedId],
   );
 
   useEffect(() => {
@@ -450,10 +452,20 @@ export default function AdminSourcesPage() {
   const clearFilters = useCallback(() => {
     setSelectedFeedId(null);
     setSelectedCompanyId(null);
+    setSelectedAuthor(null);
   }, []);
 
   const handleTileClick = useCallback((sourceId: number) => {
     setSelectedSourceId(sourceId);
+  }, []);
+
+  const handleAuthorFilterSelect = useCallback((author: RssSourceAuthor) => {
+    setSelectedAuthor(author);
+    closeSourceDetail();
+  }, [closeSourceDetail]);
+
+  const clearAuthorFilter = useCallback(() => {
+    setSelectedAuthor(null);
   }, []);
 
   return (
@@ -519,6 +531,18 @@ export default function AdminSourcesPage() {
         <Button className={styles.clearFiltersButton} onClick={clearFilters} disabled={loadingFilters}>
           Clear filters
         </Button>
+
+        {selectedAuthor ? (
+          <div className={styles.authorFilter}>
+            <span className={styles.authorFilterLabel}>Filtered author</span>
+            <Button variant="chip" size="sm" className={styles.authorFilterChip} active>
+              {selectedAuthor.name}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={clearAuthorFilter}>
+              Clear author
+            </Button>
+          </div>
+        ) : null}
       </Surface>
 
       {popInfo ? (
@@ -587,6 +611,7 @@ export default function AdminSourcesPage() {
           loading={loadingSourceDetail}
           error={sourceDetailError}
           onClose={closeSourceDetail}
+          onAuthorSelect={handleAuthorFilterSelect}
         />
       ) : null}
     </PageShell>
