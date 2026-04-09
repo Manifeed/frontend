@@ -13,9 +13,12 @@ export async function redirectIfAuthenticated(): Promise<void> {
   }
 }
 
-export async function requireSession() {
+export async function requireSession(nextPath?: string) {
   const session = await getOptionalSession();
   if (!session) {
+    if (nextPath) {
+      redirect(`/login?next=${encodeURIComponent(nextPath)}`);
+    }
     redirect("/login");
   }
   return session;

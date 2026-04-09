@@ -8,6 +8,7 @@ import styles from "./UserNavbar.module.css";
 const NAV_ITEMS = [
   { href: "/app", label: "Overview" },
   { href: "/app/profile", label: "Profile" },
+  { href: "/app/workers", label: "Workers" },
   { href: "/app/api-keys", label: "API Keys" },
 ];
 

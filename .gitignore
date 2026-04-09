@@ -15,3 +15,4 @@ yarn-debug.log*
 yarn-error.log*
 npm-debug.log*
 tsconfig.tsbuildinfo
+public/downloads/
