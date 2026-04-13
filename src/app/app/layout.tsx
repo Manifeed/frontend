@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@/components";
 import { UserNavbar } from "@/features/navigation/components/UserNavbar";
-import { logoutAction } from "@/lib/server/auth-actions";
+import { LogoutButton } from "@/features/user/components/LogoutButton";
 import { requireSession } from "@/lib/server/session-guards";
 
 import styles from "./layout.module.css";
@@ -18,11 +17,7 @@ export default async function AppLayout({ children }: AppLayoutProps) {
     <div className={styles.shell}>
       <UserNavbar />
       <div className={styles.toolbar}>
-        <form action={logoutAction}>
-          <Button variant="ghost" size="sm" type="submit">
-            Sign out
-          </Button>
-        </form>
+        <LogoutButton />
       </div>
       {children}
     </div>

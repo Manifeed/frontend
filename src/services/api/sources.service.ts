@@ -16,13 +16,11 @@ function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
   const companyId = params?.companyId;
   const authorId = params?.authorId;
 
-  let path = "/sources/";
+  let path = "/api/sources/";
   if (typeof feedId === "number") {
-    path = `/api/admin/sources/feeds/${feedId}`;
+    path = `/api/sources/feeds/${feedId}`;
   } else if (typeof companyId === "number") {
-    path = `/api/admin/sources/companies/${companyId}`;
-  } else {
-    path = "/api/admin/sources/";
+    path = `/api/sources/companies/${companyId}`;
   }
 
   const searchParams = new URLSearchParams({
@@ -40,5 +38,5 @@ export async function listRssSources(params?: ListRssSourcesParams): Promise<Rss
 }
 
 export async function getRssSourceById(sourceId: number): Promise<RssSourceDetail> {
-  return apiRequest<RssSourceDetail>(`/api/admin/sources/${sourceId}`);
+  return apiRequest<RssSourceDetail>(`/api/sources/${sourceId}`);
 }

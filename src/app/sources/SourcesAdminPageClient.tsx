@@ -19,10 +19,10 @@ import {
   Surface,
   type PopInfoType,
 } from "@/components";
-import { listRssFeeds } from "@/services/api/rss.service";
+import { listRssCompanies, listRssFeeds } from "@/services/api/rss.service";
 import { getRssSourceById, listRssSources } from "@/services/api/sources.service";
 import type { JobEnqueueRead } from "@/types/jobs";
-import type { RssFeed } from "@/types/rss";
+import type { RssCompany, RssFeed } from "@/types/rss";
 import type { RssSourceAuthor, RssSourceDetail, RssSourcePageRead } from "@/types/sources";
 
 import styles from "./page.module.css";
@@ -86,9 +86,11 @@ export default function AdminSourcesPage() {
     limit: PAGE_SIZE,
     offset: 0,
   });
+  const [companies, setCompanies] = useState<RssCompany[]>([]);
   const [feeds, setFeeds] = useState<RssFeed[]>([]);
   const [loadingSources, setLoadingSources] = useState<boolean>(true);
   const [loadingFilters, setLoadingFilters] = useState<boolean>(true);
+  const [loadingCompanyFeeds, setLoadingCompanyFeeds] = useState<boolean>(false);
   const [sourcesError, setSourcesError] = useState<string | null>(null);
   const [filtersError, setFiltersError] = useState<string | null>(null);
   const [ingestingSources, setIngestingSources] = useState<boolean>(false);
@@ -110,14 +112,41 @@ export default function AdminSourcesPage() {
     setFiltersError(null);
 
     try {
-      const payload = await listRssFeeds();
-      setFeeds(payload);
+      const payload = await listRssCompanies();
+      setCompanies(payload);
+      setSelectedCompanyId((currentCompanyId) =>
+        payload.some((company) => company.id === currentCompanyId) ? currentCompanyId : null,
+      );
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Unexpected error while loading filters";
       setFiltersError(message);
+      setCompanies([]);
     } finally {
       setLoadingFilters(false);
+    }
+  }, []);
+
+  const loadCompanyFeeds = useCallback(async (companyId: number | null) => {
+    if (companyId === null) {
+      setFeeds([]);
+      setLoadingCompanyFeeds(false);
+      return;
+    }
+
+    setLoadingCompanyFeeds(true);
+    setFiltersError(null);
+
+    try {
+      const payload = await listRssFeeds({ companyId });
+      setFeeds(payload);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unexpected error while loading company feeds";
+      setFiltersError(message);
+      setFeeds([]);
+    } finally {
+      setLoadingCompanyFeeds(false);
     }
   }, []);
 
@@ -149,6 +178,16 @@ export default function AdminSourcesPage() {
   useEffect(() => {
     void loadFilters();
   }, [loadFilters]);
+
+  useEffect(() => {
+    if (selectedCompanyId === null) {
+      setFeeds([]);
+      setSelectedFeedId(null);
+      return;
+    }
+
+    void loadCompanyFeeds(selectedCompanyId);
+  }, [loadCompanyFeeds, selectedCompanyId]);
 
   useEffect(() => {
     void loadSources(0);
@@ -241,8 +280,12 @@ export default function AdminSourcesPage() {
   }, []);
 
   const handleRefresh = useCallback(async () => {
-    await Promise.all([loadFilters(), loadSources(sourcesPage.offset)]);
-  }, [loadFilters, loadSources, sourcesPage.offset]);
+    await Promise.all([
+      loadFilters(),
+      loadSources(sourcesPage.offset),
+      loadCompanyFeeds(selectedCompanyId),
+    ]);
+  }, [loadCompanyFeeds, loadFilters, loadSources, selectedCompanyId, sourcesPage.offset]);
 
   const handleIngest = useCallback(async () => {
     setIngestingSources(true);
@@ -280,17 +323,10 @@ export default function AdminSourcesPage() {
   }, [showPopInfo]);
 
   const companyOptions = useMemo<CompanyOption[]>(() => {
-    const byId = new Map<number, string>();
-    for (const feed of feeds) {
-      if (feed.company !== null) {
-        byId.set(feed.company.id, feed.company.name);
-      }
-    }
-
-    return Array.from(byId.entries())
-      .map(([id, name]) => ({ id, name }))
+    return companies
+      .map((company) => ({ id: company.id, name: company.name }))
       .sort((left, right) => left.name.localeCompare(right.name));
-  }, [feeds]);
+  }, [companies]);
 
   const feedOptions = useMemo(() => {
     const uniqueById = new Map<number, RssFeed>();
@@ -430,7 +466,6 @@ export default function AdminSourcesPage() {
     }
 
     setSelectedFeedId(nextFeedId);
-    setSelectedCompanyId(null);
   }, []);
 
   const handleCompanyFilterChange = useCallback((nextRawValue: string) => {
@@ -501,9 +536,11 @@ export default function AdminSourcesPage() {
             id="source-feed-filter"
             value={selectedFeedId ?? ""}
             onChange={(event) => handleFeedFilterChange(event.target.value)}
-            disabled={loadingFilters}
+            disabled={loadingFilters || loadingCompanyFeeds || selectedCompanyId === null}
           >
-            <option value="">All feeds</option>
+            <option value="">
+              {selectedCompanyId === null ? "Select a company first" : "All feeds in company"}
+            </option>
             {feedOptions.map((feed) => (
               <option key={feed.id} value={feed.id}>
                 {getFeedLabel(feed)}
@@ -556,6 +593,9 @@ export default function AdminSourcesPage() {
       ) : null}
 
       {filtersError ? <Notice tone="danger">Filter load error: {filtersError}</Notice> : null}
+      {selectedCompanyId !== null && loadingCompanyFeeds ? (
+        <Notice tone="info">Loading feeds for the selected company...</Notice>
+      ) : null}
       {sourcesError ? <Notice tone="danger">Source load error: {sourcesError}</Notice> : null}
 
       <Surface className={styles.gridPanel}>

@@ -100,7 +100,7 @@ export async function getOptionalSession(): Promise<AuthSessionRead | null> {
   }
 
   try {
-    return await backendRequest<AuthSessionRead>("/auth/session", undefined, {
+    return await backendRequest<AuthSessionRead>("/api/auth/session", undefined, {
       sessionToken,
     });
   } catch (error) {

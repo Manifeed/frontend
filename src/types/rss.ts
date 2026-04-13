@@ -6,6 +6,7 @@ export type RssCompany = {
   language: string | null;
   fetchprotection: number;
   enabled: boolean;
+  feed_count: number;
 };
 
 export type RssFeed = {
@@ -26,6 +27,11 @@ export type RssFeedEnabledToggleRead = {
 export type RssCompanyEnabledToggleRead = {
   company_id: number;
   enabled: boolean;
+};
+
+export type RssCatalogSummary = {
+  companies_total: number;
+  feeds_total: number;
 };
 
 export type RssRepositoryAction = "cloned" | "update" | "up_to_date";

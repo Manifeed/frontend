@@ -1,5 +1,4 @@
 import { AuthFormCard } from "@/features/user/components/AuthFormCard";
-import { loginAction } from "@/lib/server/auth-actions";
 import { redirectIfAuthenticated } from "@/lib/server/session-guards";
 
 import styles from "../landing.module.css";
@@ -21,7 +20,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             : "Use your Manifeed credentials to access your workspace or the admin console."
         }
         submitLabel="Sign in"
-        action={loginAction}
+        mode="login"
         alternativeHref="/signup"
         alternativeLabel="Need an account? Create one."
         nextPath={searchParams?.next ?? null}

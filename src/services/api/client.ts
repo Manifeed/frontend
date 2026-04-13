@@ -54,13 +54,18 @@ function buildRequestHeaders(init?: RequestInit): Headers {
 }
 
 export function getApiBaseUrl(): string {
-  return "";
+  const value = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  if (!value) {
+    return "";
+  }
+  return value.replace(/\/+$/, "");
 }
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(`${getApiBaseUrl()}${path}`, {
     ...init,
     headers: buildRequestHeaders(init),
+    credentials: init?.credentials ?? "same-origin",
   });
 
   const payload = await parseResponsePayload(response);

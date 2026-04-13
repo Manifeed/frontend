@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const PUBLIC_PATHS = new Set(["/", "/login", "/signup"]);
+const PUBLIC_PATHS = new Set(["/", "/login", "/signup", "/rss", "/sources"]);
 const SESSION_COOKIE_NAME = "manifeed_session";
 
 function isStaticAsset(pathname: string): boolean {

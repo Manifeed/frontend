@@ -17,7 +17,6 @@ export type AuthSessionRead = {
 };
 
 export type AuthLoginRead = {
-  session_token: string;
   expires_at: string;
   user: AuthenticatedUser;
 };

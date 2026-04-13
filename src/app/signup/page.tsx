@@ -1,5 +1,4 @@
 import { AuthFormCard } from "@/features/user/components/AuthFormCard";
-import { signupAction } from "@/lib/server/auth-actions";
 import { redirectIfAuthenticated } from "@/lib/server/session-guards";
 
 import styles from "../landing.module.css";
@@ -13,7 +12,7 @@ export default async function SignupPage() {
         title="Create account"
         description="Public signup creates a standard user account. API access stays disabled until an admin enables it."
         submitLabel="Create account"
-        action={signupAction}
+        mode="signup"
         alternativeHref="/login"
         alternativeLabel="Already registered? Sign in."
         showPseudo

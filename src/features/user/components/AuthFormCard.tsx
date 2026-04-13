@@ -1,31 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 
 import { Button, Field, Notice, Surface, TextInput } from "@/components";
+import { ApiRequestError, apiRequest } from "@/services/api/client";
+import type { AuthLoginRead } from "@/types/auth";
 
 import styles from "./AuthFormCard.module.css";
-
-type AuthFormState = {
-  error: string | null;
-};
 
 type AuthFormCardProps = {
   title: string;
   description: string;
   submitLabel: string;
-  action: (state: AuthFormState, formData: FormData) => Promise<AuthFormState>;
+  mode: "login" | "signup";
   alternativeHref: string;
   alternativeLabel: string;
   showPseudo?: boolean;
   nextPath?: string | null;
 };
 
-const INITIAL_STATE: AuthFormState = { error: null };
+function resolveRedirectTarget(nextValue: string | null, role: "user" | "admin"): string {
+  if (nextValue && nextValue.startsWith("/")) {
+    return nextValue;
+  }
+  return role === "admin" ? "/admin" : "/app";
+}
 
-function SubmitButton({ label }: { label: string }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ label, pending }: { label: string; pending: boolean }) {
   return (
     <Button type="submit" variant="primary" fullWidth disabled={pending}>
       {pending ? "Working..." : label}
@@ -37,17 +40,61 @@ export function AuthFormCard({
   title,
   description,
   submitLabel,
-  action,
+  mode,
   alternativeHref,
   alternativeLabel,
   showPseudo = false,
   nextPath,
 }: AuthFormCardProps) {
-  const [state, formAction] = useFormState(action, INITIAL_STATE);
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      if (mode === "login") {
+        const payload = await apiRequest<AuthLoginRead>("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        });
+        window.location.assign(resolveRedirectTarget(nextPath ?? null, payload.user.role));
+        return;
+      }
+
+      await apiRequest("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          pseudo: String(formData.get("pseudo") ?? ""),
+          email,
+          password,
+        }),
+      });
+      router.push("/login?registered=1");
+      router.refresh();
+    } catch (submitError) {
+      if (submitError instanceof ApiRequestError) {
+        setError(submitError.message);
+      } else if (submitError instanceof Error) {
+        setError(submitError.message);
+      } else {
+        setError(mode === "login" ? "Unable to sign in" : "Unable to create account");
+      }
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <Surface className={styles.panel} tone="gradient" padding="lg">
-      <form action={formAction} className={styles.stack}>
+      <form onSubmit={handleSubmit} className={styles.stack}>
         <div className={styles.stack}>
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.description}>{description}</p>
@@ -75,9 +122,9 @@ export function AuthFormCard({
           />
         </Field>
 
-        {state.error ? <Notice tone="danger">{state.error}</Notice> : null}
+        {error ? <Notice tone="danger">{error}</Notice> : null}
 
-        <SubmitButton label={submitLabel} />
+        <SubmitButton label={submitLabel} pending={pending} />
 
         <p className={styles.hint}>
           <Link href={alternativeHref}>{alternativeLabel}</Link>
