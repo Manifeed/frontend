@@ -5,12 +5,10 @@ import { usePathname } from "next/navigation";
 
 import styles from "./UserNavbar.module.css";
 
-const NAV_ITEMS = [
-  { href: "/app", label: "Overview" },
-  { href: "/app/profile", label: "Profile" },
-  { href: "/app/workers", label: "Workers" },
-  { href: "/app/api-keys", label: "API Keys" },
-];
+type UserNavItem = {
+  href: string;
+  label: string;
+};
 
 function isActiveRoute(pathname: string | null, href: string): boolean {
   if (!pathname) {
@@ -19,7 +17,11 @@ function isActiveRoute(pathname: string | null, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function UserNavbar() {
+type UserNavbarProps = {
+  items: UserNavItem[];
+};
+
+export function UserNavbar({ items }: UserNavbarProps) {
   const pathname = usePathname();
 
   return (
@@ -27,7 +29,7 @@ export function UserNavbar() {
       <div className={styles.inner}>
         <p className={styles.brand}>Manifeed Workspace</p>
         <nav className={styles.links} aria-label="User navigation">
-          {NAV_ITEMS.map((item) => {
+          {items.map((item) => {
             const active = isActiveRoute(pathname, item.href);
             return (
               <Link

@@ -100,18 +100,16 @@ export async function getOptionalSession(): Promise<AuthSessionRead | null> {
   }
 
   try {
-    return await backendRequest<AuthSessionRead>("/auth/session", undefined, {
+    return await backendRequest<AuthSessionRead>("/api/auth/session", undefined, {
       sessionToken,
     });
   } catch (error) {
     if (
       error instanceof BackendRequestError &&
-      (error.status === 401 || error.status === 403)
+      (error.status === 401 || error.status === 403 || error.status === 404)
     ) {
       return null;
     }
     throw error;
   }
 }
-
-export { SESSION_COOKIE_NAME };

@@ -45,7 +45,7 @@ export function AdminUsersPanel() {
 
     try {
       const payload = await apiRequest<AdminUserListRead>(
-        `/api/admin/admin/users${buildUsersQuery(activeFilters)}`,
+        `/api/admin/users${buildUsersQuery(activeFilters)}`,
       );
       setUsers(payload.items);
       setError(null);
@@ -62,7 +62,7 @@ export function AdminUsersPanel() {
 
   async function patchUser(userId: number, payload: AdminUserPatchPayload) {
     try {
-      await apiRequest(`/api/admin/admin/users/${userId}`, {
+      await apiRequest(`/api/admin/users/${userId}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
       });

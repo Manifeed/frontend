@@ -3,7 +3,7 @@ import { UserProfilePanel } from "@/features/user/components/UserProfilePanel";
 import { requireSession } from "@/lib/server/session-guards";
 
 export default async function ProfilePage() {
-  const session = await requireSession();
+  const session = await requireSession("/profile");
 
   return (
     <PageShell>

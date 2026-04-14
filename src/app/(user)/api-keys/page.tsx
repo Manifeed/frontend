@@ -1,9 +1,9 @@
 import { PageHeader, PageShell } from "@/components";
-import { requireSession } from "@/lib/server/session-guards";
 import { UserApiKeysPanel } from "@/features/user/components/UserApiKeysPanel";
+import { requireApiEnabledSession } from "@/lib/server/session-guards";
 
 export default async function ApiKeysPage() {
-  const session = await requireSession();
+  await requireApiEnabledSession("/api-keys");
 
   return (
     <PageShell>
@@ -11,7 +11,7 @@ export default async function ApiKeysPage() {
         title="API Keys"
         description="Create one key per worker installation and keep them scoped to a single worker type."
       />
-      <UserApiKeysPanel apiAccessEnabled={session.user.api_access_enabled} />
+      <UserApiKeysPanel />
     </PageShell>
   );
 }

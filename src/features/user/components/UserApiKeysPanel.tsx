@@ -8,11 +8,7 @@ import type { UserApiKeyCreateRead, UserApiKeyListRead } from "@/types/account";
 
 import styles from "./UserApiKeysPanel.module.css";
 
-type Props = {
-  apiAccessEnabled: boolean;
-};
-
-export function UserApiKeysPanel({ apiAccessEnabled }: Props) {
+export function UserApiKeysPanel() {
   const [keys, setKeys] = useState<UserApiKeyListRead["items"]>([]);
   const [label, setLabel] = useState("");
   const [workerType, setWorkerType] = useState<"rss_scrapper" | "source_embedding">("rss_scrapper");
@@ -59,13 +55,6 @@ export function UserApiKeysPanel({ apiAccessEnabled }: Props) {
 
   return (
     <section className={styles.panel}>
-      {!apiAccessEnabled ? (
-        <Notice tone="warning">
-          API access is disabled on your account. An admin must enable it before you can create
-          worker keys.
-        </Notice>
-      ) : null}
-
       {error ? <Notice tone="danger">{error}</Notice> : null}
 
       {createdSecret ? (
@@ -83,7 +72,6 @@ export function UserApiKeysPanel({ apiAccessEnabled }: Props) {
               value={label}
               onChange={(event) => setLabel(event.target.value)}
               required
-              disabled={!apiAccessEnabled}
             />
           </Field>
           <Field label="Worker type" htmlFor="api-key-worker-type">
@@ -93,13 +81,12 @@ export function UserApiKeysPanel({ apiAccessEnabled }: Props) {
               onChange={(event) =>
                 setWorkerType(event.target.value as "rss_scrapper" | "source_embedding")
               }
-              disabled={!apiAccessEnabled}
             >
               <option value="rss_scrapper">RSS worker</option>
               <option value="source_embedding">Embedding worker</option>
             </SelectInput>
           </Field>
-          <Button type="submit" variant="primary" disabled={!apiAccessEnabled}>
+          <Button type="submit" variant="primary">
             Create API key
           </Button>
         </form>

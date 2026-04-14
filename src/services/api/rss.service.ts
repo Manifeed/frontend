@@ -24,7 +24,7 @@ export function buildRssIconUrl(iconUrl: string | null): string | null {
     return null;
   }
 
-  return `/api/admin/rss/img/${encodedPath}`;
+  return `/api/rss/img/${encodedPath}`;
 }
 
 export async function listRssFeeds(): Promise<RssFeed[]> {

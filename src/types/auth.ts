@@ -21,3 +21,11 @@ export type AuthLoginRead = {
   expires_at: string;
   user: AuthenticatedUser;
 };
+
+export type AuthRegisterRead = {
+  user: AuthenticatedUser;
+};
+
+export type AuthLogoutRead = {
+  ok: boolean;
+};

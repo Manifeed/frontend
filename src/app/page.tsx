@@ -18,9 +18,8 @@ export default async function LandingPage() {
           </div>
 
           <p className={styles.lead}>
-            The web app now routes sensitive traffic through the Next.js server, keeps sessions in
-            HTTP-only cookies, and separates public access, user workspaces, and the admin control
-            room.
+            The edge now routes browser pages, web APIs, and worker APIs cleanly, while FastAPI
+            stays the source of truth for application auth and error payloads.
           </p>
 
           <div className={styles.actions}>
@@ -30,16 +29,16 @@ export default async function LandingPage() {
 
           <div className={styles.stats}>
             <Surface tone="soft" padding="md">
-              <p className={styles.statValue}>BFF</p>
-              <p className={styles.statLabel}>No direct browser to backend calls.</p>
+              <p className={styles.statValue}>Edge</p>
+              <p className={styles.statLabel}>Thin reverse proxy with custom edge-only errors.</p>
             </Surface>
             <Surface tone="soft" padding="md">
               <p className={styles.statValue}>Roles</p>
-              <p className={styles.statLabel}>Public, user, and admin routes split cleanly.</p>
+              <p className={styles.statLabel}>Public, user, API-enabled, and admin access split cleanly.</p>
             </Surface>
             <Surface tone="soft" padding="md">
               <p className={styles.statValue}>Keys</p>
-              <p className={styles.statLabel}>Workers authenticate with user-owned API keys.</p>
+              <p className={styles.statLabel}>Workers authenticate through dedicated /workers/api routes.</p>
             </Surface>
           </div>
         </section>

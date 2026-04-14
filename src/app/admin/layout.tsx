@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Button } from "@/components";
 import { AdminNavbar } from "@/features/navigation/components/AdminNavbar";
-import { logoutAction } from "@/lib/server/auth-actions";
+import { LogoutButton } from "@/features/user/components/LogoutButton";
 import { requireAdminSession } from "@/lib/server/session-guards";
 
 import styles from "./layout.module.css";
@@ -18,11 +17,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     <div className={styles.shell}>
       <AdminNavbar />
       <div className={styles.toolbar}>
-        <form action={logoutAction}>
-          <Button variant="ghost" size="sm" type="submit">
-            Sign out
-          </Button>
-        </form>
+        <LogoutButton />
       </div>
       {children}
     </div>

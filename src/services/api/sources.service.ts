@@ -16,7 +16,7 @@ function buildListRssSourcesPath(params?: ListRssSourcesParams): string {
   const companyId = params?.companyId;
   const authorId = params?.authorId;
 
-  let path = "/sources/";
+  let path = "/api/admin/sources/";
   if (typeof feedId === "number") {
     path = `/api/admin/sources/feeds/${feedId}`;
   } else if (typeof companyId === "number") {

@@ -1,0 +1,112 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background:
+    radial-gradient(circle at top, rgb(125 157 255 / 0.24), transparent 35%),
+    radial-gradient(circle at bottom right, rgb(255 183 125 / 0.14), transparent 30%),
+    var(--surface-page);
+}
+
+.panel {
+  width: min(100%, 44rem);
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, rgb(7 13 27 / 0.92), rgb(11 16 32 / 0.92));
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-accent);
+  font-family: var(--font-family-error-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-family-error-heading);
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 0.98;
+}
+
+.message {
+  margin: 0 auto;
+  max-width: 32rem;
+  color: var(--text-secondary);
+  font-family: var(--font-family-error-body);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-error-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-easing-standard),
+    opacity var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+  cursor: pointer;
+}
+
+.primaryAction {
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, var(--color-heavenly-100), var(--color-complementary-100));
+  color: var(--text-on-accent);
+}
+
+.secondaryAction {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.primaryAction:hover,
+.primaryAction:focus-visible,
+.secondaryAction:hover,
+.secondaryAction:focus-visible {
+  transform: var(--motion-hover-lift);
+  opacity: 0.95;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    width: 100%;
+  }
+}

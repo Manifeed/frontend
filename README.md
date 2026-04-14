@@ -1,6 +1,6 @@
 # Manifeed Frontend
 
-Repo frontend Next.js de Manifeed. Il contient la landing publique, les parcours `login/signup`, l'espace `app` pour les utilisateurs connectes et l'espace `admin` pour la console d'administration.
+Repo frontend Next.js de Manifeed. Il contient la landing publique, les parcours `login/signup`, les pages user `/profile`, `/workers`, `/api-keys` et l'espace `admin` pour la console d'administration.
 
 ## Demarrage local
 
@@ -8,6 +8,17 @@ Repo frontend Next.js de Manifeed. Il contient la landing publique, les parcours
 yarn install
 BACKEND_INTERNAL_URL=http://127.0.0.1:8000 yarn dev
 ```
+
+`BACKEND_INTERNAL_URL` ne sert qu'au SSR Next, mais il pointe maintenant vers les memes routes
+publiques canoniques que le navigateur :
+
+- `/api/auth/*`
+- `/api/account/*`
+- `/api/admin/*`
+- `/api/rss/img/*`
+- `/workers/api/releases/desktop`
+
+Le navigateur passe par l'edge Nginx expose par `../infra`, sans rewrite applicatif.
 
 Autres commandes :
 

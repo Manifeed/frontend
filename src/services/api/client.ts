@@ -1,3 +1,4 @@
+import { buildLoginHref } from "@/lib/auth/redirects";
 import type { ApiErrorPayload } from "@/types/api";
 
 export class ApiRequestError extends Error {
@@ -9,6 +10,46 @@ export class ApiRequestError extends Error {
     this.name = "ApiRequestError";
     this.status = status;
     this.payload = payload;
+  }
+}
+
+function getBrowserCurrentPath(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const { pathname, search } = window.location;
+  return `${pathname}${search}`;
+}
+
+function resolveMaskedNotFoundRedirect(status: number): string | null {
+  if (typeof window === "undefined" || status !== 404) {
+    return null;
+  }
+
+  const { pathname } = window.location;
+  if (pathname.startsWith("/admin")) {
+    return "/admin/__not_found__";
+  }
+  if (pathname === "/workers" || pathname === "/api-keys") {
+    return "/";
+  }
+  return null;
+}
+
+function handleBrowserApiFailure(status: number): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  if (status === 401) {
+    window.location.assign(buildLoginHref(getBrowserCurrentPath()));
+    return;
+  }
+
+  const maskedRedirectTarget = resolveMaskedNotFoundRedirect(status);
+  if (maskedRedirectTarget) {
+    window.location.assign(maskedRedirectTarget);
   }
 }
 
@@ -53,19 +94,17 @@ function buildRequestHeaders(init?: RequestInit): Headers {
   return headers;
 }
 
-export function getApiBaseUrl(): string {
-  return "";
-}
-
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
     ...init,
+    credentials: "same-origin",
     headers: buildRequestHeaders(init),
   });
 
   const payload = await parseResponsePayload(response);
 
   if (!response.ok) {
+    handleBrowserApiFailure(response.status);
     const message = getPayloadMessage(payload) ?? `Request failed with status ${response.status}`;
     throw new ApiRequestError(message, response.status, payload);
   }

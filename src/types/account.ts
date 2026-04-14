@@ -22,6 +22,10 @@ export type AccountProfileUpdateRead = {
   user: AuthenticatedUser;
 };
 
+export type AccountPasswordUpdateRead = {
+  ok: boolean;
+};
+
 export type UserApiKeyRead = {
   id: number;
   label: string;

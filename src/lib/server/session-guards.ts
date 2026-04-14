@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+
+import { buildLoginHref, resolveDefaultHome } from "@/lib/auth/redirects";
 
 import { getOptionalSession } from "./backend";
-
-function resolveDefaultHome(role: "user" | "admin"): string {
-  return role === "admin" ? "/admin" : "/app";
-}
 
 export async function redirectIfAuthenticated(): Promise<void> {
   const session = await getOptionalSession();
@@ -13,32 +11,26 @@ export async function redirectIfAuthenticated(): Promise<void> {
   }
 }
 
-export async function requireSession(nextPath?: string) {
+export async function requireSession(nextPath: string) {
   const session = await getOptionalSession();
   if (!session) {
-    if (nextPath) {
-      redirect(`/login?next=${encodeURIComponent(nextPath)}`);
-    }
-    redirect("/login");
+    redirect(buildLoginHref(nextPath));
   }
   return session;
 }
 
 export async function requireAdminSession() {
-  const session = await requireSession();
-  if (session.user.role !== "admin") {
-    redirect("/app");
+  const session = await getOptionalSession();
+  if (!session || session.user.role !== "admin") {
+    notFound();
   }
   return session;
 }
 
-export async function redirectLegacyAdminRoute(targetPath: string): Promise<void> {
-  const session = await getOptionalSession();
-  if (!session) {
-    redirect(`/login?next=${encodeURIComponent(targetPath)}`);
+export async function requireApiEnabledSession(nextPath: string) {
+  const session = await requireSession(nextPath);
+  if (!session.user.api_access_enabled) {
+    redirect("/");
   }
-  if (session.user.role !== "admin") {
-    redirect("/app");
-  }
-  redirect(targetPath);
+  return session;
 }

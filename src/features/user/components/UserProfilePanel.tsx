@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button, Field, Notice, Surface, TextInput } from "@/components";
 import { apiRequest } from "@/services/api/client";
-import type { AccountProfileUpdateRead } from "@/types/account";
+import type { AccountPasswordUpdateRead, AccountProfileUpdateRead } from "@/types/account";
 import type { AuthenticatedUser } from "@/types/auth";
 
 type Props = {
@@ -14,10 +14,15 @@ type Props = {
 
 export function UserProfilePanel({ user }: Props) {
   const router = useRouter();
+  const [isRedirecting, startRedirect] = useTransition();
   const [pseudo, setPseudo] = useState(user.pseudo);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,6 +42,32 @@ export function UserProfilePanel({ user }: Props) {
       setError(updateError instanceof Error ? updateError.message : "Unable to update pseudo");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handlePasswordSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setChangingPassword(true);
+    setPasswordError(null);
+
+    try {
+      await apiRequest<AccountPasswordUpdateRead>("/api/account/password", {
+        method: "PATCH",
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+      startRedirect(() => {
+        router.replace("/login?passwordChanged=1");
+        router.refresh();
+      });
+    } catch (updateError) {
+      setPasswordError(
+        updateError instanceof Error ? updateError.message : "Unable to update password",
+      );
+    } finally {
+      setChangingPassword(false);
     }
   }
 
@@ -65,6 +96,40 @@ export function UserProfilePanel({ user }: Props) {
 
         <Button type="submit" variant="primary" disabled={saving}>
           {saving ? "Saving..." : "Update pseudo"}
+        </Button>
+      </form>
+
+      <form
+        onSubmit={handlePasswordSubmit}
+        style={{ display: "grid", gap: "0.75rem", maxWidth: "24rem" }}
+      >
+        <Field label="Current password" htmlFor="current-password">
+          <TextInput
+            id="current-password"
+            value={currentPassword}
+            onChange={(event) => setCurrentPassword(event.target.value)}
+            type="password"
+            autoComplete="current-password"
+            required
+          />
+        </Field>
+
+        <Field label="New password" htmlFor="new-password">
+          <TextInput
+            id="new-password"
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
+            type="password"
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
+        </Field>
+
+        {passwordError ? <Notice tone="danger">{passwordError}</Notice> : null}
+
+        <Button type="submit" variant="primary" disabled={changingPassword || isRedirecting}>
+          {changingPassword || isRedirecting ? "Updating..." : "Change password"}
         </Button>
       </form>
     </Surface>

@@ -10,6 +10,28 @@ type Props = {
   manifestError: string | null;
 };
 
+function normalizeReleaseUrl(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return "#";
+  }
+
+  try {
+    const parsed = trimmed.startsWith("/")
+      ? new URL(trimmed, "http://localhost")
+      : new URL(trimmed);
+    const normalizedPath = parsed.pathname === "/app/workers" ? "/workers" : parsed.pathname;
+
+    if (normalizedPath === "/workers" || normalizedPath.startsWith("/workers/")) {
+      return `${normalizedPath}${parsed.search}${parsed.hash}`;
+    }
+  } catch {
+    return trimmed;
+  }
+
+  return trimmed;
+}
+
 function formatPublishedAt(publishedAt: string) {
   const date = new Date(publishedAt);
   if (Number.isNaN(date.getTime())) {
@@ -55,7 +77,7 @@ export function WorkerInstallerPanel({
             </div>
             <div className={styles.actions}>
               <a
-                href={featuredRelease.download_url}
+                href={normalizeReleaseUrl(featuredRelease.download_url)}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.primaryLink}
@@ -63,7 +85,7 @@ export function WorkerInstallerPanel({
                 {featuredRelease.download_label}
               </a>
               <a
-                href={featuredRelease.release_notes_url}
+                href={normalizeReleaseUrl(featuredRelease.release_notes_url)}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.secondaryLink}
@@ -99,7 +121,7 @@ export function WorkerInstallerPanel({
                 </p>
                 <div className={styles.actions}>
                   <a
-                    href={release.download_url}
+                    href={normalizeReleaseUrl(release.download_url)}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.primaryLink}
@@ -107,7 +129,7 @@ export function WorkerInstallerPanel({
                     {release.download_label}
                   </a>
                   <a
-                    href={release.release_notes_url}
+                    href={normalizeReleaseUrl(release.release_notes_url)}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.secondaryLink}
