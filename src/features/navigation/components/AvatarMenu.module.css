@@ -1,0 +1,100 @@
+.menuRoot {
+  position: relative;
+}
+
+.avatarButton {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  padding: 0;
+  background: color-mix(in srgb, var(--color-white-100) 82%, transparent 18%);
+  box-shadow: var(--effect-elevation-soft);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.avatarButton:hover {
+  transform: var(--motion-hover-lift);
+  border-color: var(--color-primary-100);
+}
+
+.avatarButton:focus-visible {
+  outline: none;
+  box-shadow: var(--effect-focus-ring);
+}
+
+.avatarImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menuPanel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 160;
+  min-width: 12.5rem;
+  padding: var(--space-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-white-100) 84%, transparent 16%);
+  backdrop-filter: blur(var(--effect-blur-md));
+  box-shadow: var(--effect-elevation-soft);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.menuAction {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: var(--button-r-size);
+  font-weight: var(--button-r-weight);
+  line-height: var(--button-r-line-height);
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.menuAction:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background: var(--surface-accent);
+}
+
+.menuAction:focus-visible {
+  outline: none;
+  box-shadow: var(--effect-focus-ring);
+}
+
+.menuAction:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.dangerAction:hover:not(:disabled) {
+  border-color: var(--color-secondary-100);
+  background: var(--surface-secondary);
+}
+
+.error {
+  margin: var(--space-1) var(--space-2) 0;
+  color: var(--status-alert);
+  font-size: var(--text-r-size);
+  line-height: var(--text-r-line-height);
+}

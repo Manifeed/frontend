@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Manifeed",
-  description: "Server-side orchestration for Manifeed",
+  description: "RSS feed manager",
 };
 
 type RootLayoutProps = {

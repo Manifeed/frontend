@@ -1,45 +1,13 @@
-.backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 220;
-  background: rgb(7 13 27 / 0.74);
-  backdrop-filter: blur(2px);
-  display: grid;
-  place-items: center;
-  padding: var(--space-4);
-}
-
 .panel {
-  position: relative;
-  width: min(930px, 100%);
-  max-height: calc(100dvh - (var(--space-4) * 2));
-  overflow: auto;
-  border-radius: var(--radius-xl);
-  border-color: var(--border-subtle);
-  background: linear-gradient(180deg, rgb(5 11 31 / 0.98) 0%, rgb(4 8 22 / 1) 100%);
-  box-shadow: 0 24px 60px rgb(7 13 27 / 0.72);
+  background: linear-gradient(180deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
 }
 
-.closeButton {
-  position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  z-index: 4;
-  border-color: var(--color-white-7);
-  border-radius: var(--radius-pill);
-  background: rgb(7 13 27 / 0.72);
-  color: var(--text-primary);
-}
-
-.closeButton:hover:not(:disabled) {
-  transform: none;
-  border-color: var(--border-strong);
-  background: rgb(7 13 27 / 0.88);
-  color: var(--text-primary);
+.modalBody {
+  padding: 0;
 }
 
 .statePanel {
-  padding: var(--space-9) var(--space-6) var(--space-6);
+  padding: var(--space-8) var(--space-6) var(--space-6);
   display: grid;
   gap: var(--space-3);
 }
@@ -63,7 +31,7 @@
   inset: auto 0 0;
   height: 30%;
   pointer-events: none;
-  background: linear-gradient(180deg, rgb(7 13 27 / 0) 0%, rgb(7 13 27 / 0.34) 100%);
+  background: linear-gradient(180deg, transparent 0%, var(--color-white-7) 100%);
 }
 
 .banner img {
@@ -77,11 +45,7 @@
   height: 100%;
   display: grid;
   place-items: center;
-  background: linear-gradient(
-    160deg,
-    rgb(125 157 255 / 0.22) 0%,
-    rgb(125 157 255 / 0.06) 100%
-  );
+  background: linear-gradient(160deg, var(--surface-accent) 0%, var(--color-white-100) 100%);
 }
 
 .bannerFallback span {
@@ -95,7 +59,7 @@
   display: grid;
   gap: var(--space-2);
   padding: var(--space-6);
-  background: linear-gradient(180deg, rgb(6 12 32 / 0.98) 0%, rgb(3 8 22 / 1) 100%);
+  background: linear-gradient(180deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
 }
 
 .company {
@@ -150,22 +114,32 @@
   flex-wrap: wrap;
 }
 
+.authorTag,
 .authorButton {
-  border-color: rgb(125 157 255 / 0.64);
-  background: rgb(125 157 255 / 0.08);
+  border-color: var(--color-primary-100);
+  background: var(--surface-accent);
   color: var(--text-secondary);
 }
 
+.authorTag {
+  border: 1px solid var(--color-primary-100);
+  border-radius: var(--radius-pill);
+  padding: 0.23rem 0.78rem;
+  font-size: var(--button-r-size);
+  font-weight: var(--button-b-weight);
+  line-height: 1.2;
+}
+
 .authorButton:hover:not(:disabled) {
-  border-color: var(--border-strong);
+  border-color: var(--color-primary-100);
   color: var(--text-primary);
 }
 
 .sectionTags span {
-  border: 1px solid rgb(125 157 255 / 0.64);
+  border: 1px solid var(--color-primary-100);
   border-radius: var(--radius-pill);
   padding: 0.23rem 0.78rem;
-  background: rgb(125 157 255 / 0.08);
+  background: var(--surface-accent);
   color: var(--text-secondary);
   font-size: var(--button-r-size);
   font-weight: var(--button-b-weight);
@@ -212,20 +186,14 @@
 
   .panel {
     width: 100%;
-    max-height: calc(100dvh - (var(--space-2) * 2));
-  }
-
-  .banner {
-    aspect-ratio: 16 / 11;
-  }
-
-  .closeButton {
-    top: var(--space-3);
-    right: var(--space-3);
   }
 
   .body {
     gap: var(--space-2);
+  }
+
+  .banner {
+    aspect-ratio: 16 / 11;
   }
 
   .footer {

@@ -16,18 +16,18 @@
 
 .tone_info {
   color: var(--text-primary);
-  border-color: var(--border-strong);
-  background: var(--color-heavenly-12);
+  border-color: var(--color-primary-100);
+  background: var(--surface-accent);
 }
 
 .tone_warning {
   color: var(--status-warning);
-  border-color: var(--color-complementary-70);
-  background: var(--color-complementary-12);
+  border-color: var(--color-secondary-100);
+  background: var(--surface-secondary);
 }
 
 .tone_danger {
   color: var(--status-alert);
-  border-color: var(--color-complementary-70);
-  background: var(--color-complementary-12);
+  border-color: var(--color-secondary-100);
+  background: var(--surface-secondary);
 }

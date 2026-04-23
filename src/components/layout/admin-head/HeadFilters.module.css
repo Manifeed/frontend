@@ -1,0 +1,66 @@
+.root {
+	position: sticky;
+	top: var(--admin-navbar-height);
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 110;
+	pointer-events: none;
+	backdrop-filter: blur(var(--effect-blur-md));
+}
+
+.content {
+	width: 100%;
+	pointer-events: auto;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.tabItem {
+	flex: 1 1 0;
+	min-width: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-2) var(--space-3);
+	background: none;
+	border: 1px solid var(--border-subtle);
+	color: var(--text-secondary);
+	font-size: var(--button-r-size);
+	font-weight: var(--button-r-weight);
+	line-height: var(--button-r-line-height);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition:
+		color var(--motion-duration-fast) var(--motion-easing-standard),
+		border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.tabItem:hover:not(:disabled) {
+	color: var(--text-primary);
+}
+
+.tabItem:focus-visible {
+	outline: none;
+	box-shadow: var(--effect-focus-ring);
+}
+
+.tabItem:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.tabItem_active {
+	color: var(--text-accent);
+	font-weight: var(--button-b-weight);
+	box-shadow: none;
+	cursor: default;
+	pointer-events: none;
+	border-color: transparent;
+}
+
+.tabLabel {
+	display: inline-block;
+}

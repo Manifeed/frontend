@@ -1,7 +1,8 @@
 import { apiRequest } from "@/services/api/client";
 import type {
+  AdminRssCompany,
+  AdminRssFeed,
   RssCompanyEnabledToggleRead,
-  RssFeed,
   RssFeedEnabledToggleRead,
   RssSyncRead,
 } from "@/types/rss";
@@ -27,8 +28,23 @@ export function buildRssIconUrl(iconUrl: string | null): string | null {
   return `/api/rss/img/${encodedPath}`;
 }
 
-export async function listRssFeeds(): Promise<RssFeed[]> {
-  return apiRequest<RssFeed[]>("/api/admin/rss/");
+type ListRssFeedsParams = {
+  companyId?: number | null;
+};
+
+export async function listRssCompanies(): Promise<AdminRssCompany[]> {
+  return apiRequest<AdminRssCompany[]>("/api/admin/rss/companies");
+}
+
+export async function listRssFeeds(params?: ListRssFeedsParams): Promise<AdminRssFeed[]> {
+  const searchParams = new URLSearchParams();
+  if (typeof params?.companyId === "number") {
+    searchParams.set("company_id", String(params.companyId));
+  }
+
+  const query = searchParams.toString();
+  const path = query.length > 0 ? `/api/admin/rss/?${query}` : "/api/admin/rss/";
+  return apiRequest<AdminRssFeed[]>(path);
 }
 
 export async function syncRssFeeds(force = false): Promise<RssSyncRead> {

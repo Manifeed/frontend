@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --font-family-base: var(--font-body, "Segoe UI"), "Trebuchet MS", sans-serif;
   --font-family-heading: var(--font-heading, var(--font-family-base));
 
@@ -49,71 +50,70 @@
   --space-8: 2rem;
   --space-9: 2.5rem;
 
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 22px;
-  --radius-pill: 999px;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.35rem;
+  --radius-lg: 0.45rem;
+  --radius-xl: 0.55rem;
+  --radius-pill: 100rem;
 
   --layout-content-max: 1380px;
   --layout-content-max-wide: 1440px;
   --layout-page-padding: clamp(0.7rem, 2vw, 1.5rem);
 
-  --color-white-100: #f2f5ff;
-  --color-white-7: rgb(242 245 255 / 0.07);
+  --color-white-100: #F9F8F6;
+  --color-white-60: #F9F8F69C;
+  --color-white-7: #f9f8f612;
 
-  --color-navy-100: #070d1b;
-  --color-navy-84: rgb(7 13 27 / 0.84);
+  --color-black-100: #2C2F3A;
+  --color-black-7: #2C2F3A12;
 
-  --color-ebony-100: #0b1020;
+  --color-dark-gray-100: #625F6D;
+  --color-dark-gray-7: #625F6D12;
 
-  --color-heavenly-100: #7d9dff;
-  --color-heavenly-70: rgb(125 157 255 / 0.7);
-  --color-heavenly-20: rgb(125 157 255 / 0.2);
-  --color-heavenly-12: rgb(125 157 255 / 0.12);
-  --color-heavenly-0: rgb(125 157 255 / 0);
+  --color-gray-100: #E1DFDB;
+  --color-gray-7: #E1DFDB12;
 
-  --color-american-steel-100: #b2bddc;
-  --color-american-steel-84: rgb(178 189 220 / 0.84);
+  --color-light-gray-100: #EFEEEC;
+  --color-light-gray-7: #EFEEEC12;
 
-  --color-complementary-100: #ffb77d;
-  --color-complementary-70: rgb(255 183 125 / 0.7);
-  --color-complementary-20: rgb(255 183 125 / 0.2);
-  --color-complementary-12: rgb(255 183 125 / 0.12);
-  --color-complementary-0: rgb(255 183 125 / 0);
+  --color-primary-100: #003FE0;
+  --color-primary-7: #003FE012;
 
-  --surface-page: linear-gradient(
-    160deg,
-    var(--color-navy-100) 0%,
-    var(--color-ebony-100) 100%
-  );
-  --surface-panel: var(--color-navy-84);
-  --surface-panel-soft: var(--color-heavenly-12);
-  --surface-panel-muted: var(--color-white-7);
+  --color-secondary-100: #DF7700;
+  --color-secondary-7: #DF770012;
 
-  --border-subtle: var(--color-heavenly-20);
-  --border-strong: var(--color-heavenly-70);
+  --surface-page: var(--color-light-gray-100);
+  --surface-panel: color-mix(in srgb, var(--color-white-100) 84%, var(--color-light-gray-100) 16%);
+  --surface-panel-soft: color-mix(in srgb, var(--color-white-100) 72%, var(--color-light-gray-100) 28%);
+  --surface-panel-muted: color-mix(in srgb, var(--color-white-100) 58%, var(--color-light-gray-100) 42%);
+  --surface-accent: var(--color-primary-7);
+  --surface-accent-strong: color-mix(in srgb, var(--color-primary-7) 65%, var(--color-white-100) 35%);
+  --surface-secondary: var(--color-secondary-7);
 
-  --text-primary: var(--color-white-100);
-  --text-secondary: var(--color-american-steel-100);
-  --text-secondary-strong: var(--color-american-steel-84);
-  --text-accent: var(--color-heavenly-100);
-  --text-on-accent: var(--color-ebony-100);
+  --border-subtle: var(--color-gray-100);
+  --border-strong: color-mix(in srgb, var(--color-gray-100) 62%, var(--color-dark-gray-100) 38%);
 
-  --status-alert: var(--color-complementary-100);
-  --status-success: var(--color-heavenly-100);
-  --status-warning: var(--color-complementary-70);
+  --text-primary: var(--color-black-100);
+  --text-secondary: var(--color-dark-gray-100);
+  --text-secondary-strong: var(--color-black-100);
+  --text-accent: var(--color-primary-100);
+  --text-on-accent: var(--color-white-100);
+
+  --status-alert: var(--color-secondary-100);
+  --status-success: var(--color-primary-100);
+  --status-warning: var(--color-secondary-100);
 
   --motion-duration-fast: 150ms;
   --motion-duration-base: 220ms;
   --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-hover-lift: translateY(-1px);
 
-  --effect-blur-sm: 14px;
-  --effect-blur-md: 16px;
+  --effect-blur-sm: 10px;
+  --effect-blur-md: 14px;
   --effect-blur-lg: 18px;
-  --effect-elevation-soft: 0 18px 45px var(--color-navy-84);
-  --effect-focus-ring: 0 0 0 2px var(--color-heavenly-12);
+  --effect-elevation-soft:
+    0 0 0.5rem var(--color-black-7);
+  --effect-focus-ring: 0 0 0 2px var(--color-primary-100);
 
   --shadow-soft: var(--effect-elevation-soft);
   --admin-navbar-height: 62px;
@@ -130,7 +130,10 @@ body {
 }
 
 body {
-  background: var(--surface-page);
+  background:
+    radial-gradient(circle at bottom left, var(--color-primary-7), transparent 28%),
+    radial-gradient(circle at top right, var(--color-secondary-7), transparent 26%),
+    var(--surface-page);
   color: var(--text-primary);
   font-family: var(--font-family-base);
   font-size: var(--text-r-size);
@@ -143,6 +146,8 @@ h2,
 h3 {
   font-family: var(--font-family-heading);
   letter-spacing: 0.01em;
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
@@ -249,4 +254,8 @@ button {
   font-size: var(--button-b-size);
   font-weight: var(--button-b-weight);
   line-height: var(--button-b-line-height);
+}
+
+.main {
+  min-height: 100vh;
 }

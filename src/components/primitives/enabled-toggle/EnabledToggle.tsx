@@ -18,9 +18,8 @@ export function EnabledToggle({
   const blocked = disabled || loading;
 
   const handleClick = () => {
-    if (blocked) {
+    if (blocked)
       return;
-    }
 
     void onChange(!enabled);
   };

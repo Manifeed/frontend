@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { ApiRequestError } from "@/services/api/client";
-import { getHealthStatus } from "@/services/api/health.service";
+import { ApiRequestError, apiRequest } from "@/services/api/client";
 import type { HealthRead } from "@/types/health";
 
 type UseHealthStatusResult = {
@@ -29,7 +28,7 @@ export function useHealthStatus(): UseHealthStatusResult {
 
   const refresh = useCallback(async () => {
     try {
-      const payload = await getHealthStatus();
+      const payload = await apiRequest<HealthRead>("/api/admin/health/");
       setHealth(payload);
       setStatusText(payload.status);
     } catch (error) {

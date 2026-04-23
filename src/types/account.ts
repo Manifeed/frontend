@@ -15,7 +15,8 @@ export type AccountMeRead = {
 };
 
 export type AccountProfileUpdateRequest = {
-  pseudo: string;
+  pseudo?: string;
+  pp_id?: number;
 };
 
 export type AccountProfileUpdateRead = {

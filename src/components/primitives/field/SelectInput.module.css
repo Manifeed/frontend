@@ -1,0 +1,90 @@
+.selectRoot {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  min-width: 0;
+  color: var(--text-secondary);
+}
+
+.selectInput {
+  width: calc(var(--select-label-width, 0px) + 1.5rem);
+  min-width: 0;
+  padding: var(--space-1);
+  padding-right: 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: inherit;
+  font-size: 0.72rem;
+  font-weight: var(--text-b-weight);
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  field-sizing: content;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.selectInput:focus {
+  box-shadow: var(--effect-focus-ring);
+  outline: none;
+}
+
+.selectInput:hover {
+  border: 1px solid var(--border-strong);
+}
+
+.selectInput:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.selectInput option {
+  background: var(--color-white-100);
+  color: var(--text-primary);
+  font-size: var(--text-r-size);
+  font-weight: var(--text-r-weight);
+  line-height: var(--text-r-line-height);
+}
+
+.selectIndicator {
+  position: absolute;
+  top: 50%;
+  right: var(--space-1);
+  width: 0.7rem;
+  height: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary-strong);
+  pointer-events: none;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.selectIndicator svg {
+  width: 100%;
+  height: 100%;
+}
+
+.selectRoot[data-open="true"] .selectIndicator {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.selectSizer {
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: 0.72rem;
+  font-weight: var(--text-b-weight);
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

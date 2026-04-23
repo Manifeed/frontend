@@ -2,7 +2,7 @@
   --shell-gap: var(--space-4);
   width: min(var(--layout-max-width), calc(100% - (var(--layout-page-padding) * 2)));
   margin: 0 auto;
-  padding: var(--space-5) 0 var(--space-9);
+  padding: 0;
   display: grid;
   gap: var(--shell-gap);
 }

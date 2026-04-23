@@ -28,23 +28,23 @@
 }
 
 .info {
-  border-color: var(--border-strong);
-  background: var(--color-heavenly-12);
+  border-color: var(--color-primary-100);
+  background: var(--surface-accent);
 }
 
 .alert {
-  border-color: var(--color-complementary-70);
-  background: var(--color-complementary-20);
+  border-color: var(--color-secondary-100);
+  background: var(--surface-secondary);
 }
 
 .success {
-  border-color: var(--border-strong);
-  background: var(--color-heavenly-20);
+  border-color: var(--color-primary-100);
+  background: var(--surface-accent-strong);
 }
 
 .warning {
-  border-color: var(--color-complementary-70);
-  background: var(--color-complementary-12);
+  border-color: var(--color-secondary-100);
+  background: var(--surface-secondary);
 }
 
 @keyframes popInfoSlideIn {

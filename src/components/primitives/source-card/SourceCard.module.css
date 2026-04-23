@@ -1,7 +1,7 @@
 .card {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--color-ebony-100) 100%);
+  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
   width: 100%;
   height: fit-content;
   padding: 0;
@@ -25,11 +25,11 @@
 }
 
 .cardWithBanner {
-  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--color-ebony-100) 100%);
+  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
 }
 
 .cardWithoutBanner {
-  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
+  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--surface-panel-muted) 100%);
 }
 
 .banner {

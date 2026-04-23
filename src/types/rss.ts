@@ -1,21 +1,20 @@
-export type RssCompany = {
+export type AdminRssCompany = {
   id: number;
   name: string;
   icon_url: string | null;
-  country: string | null;
-  language: string | null;
-  fetchprotection: number;
   enabled: boolean;
 };
 
-export type RssFeed = {
+export type AdminRssFeed = {
   id: number;
   url: string;
   section: string | null;
   enabled: boolean;
   trust_score: number;
   fetchprotection: number;
-  company: RssCompany | null;
+  consecutive_error_count: number;
+  last_error_code: number | null;
+  company: AdminRssCompany | null;
 };
 
 export type RssFeedEnabledToggleRead = {

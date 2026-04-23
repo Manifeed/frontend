@@ -1,34 +1,48 @@
-export type RssSourceAuthor = {
+export type SourceAuthor = {
   id: number;
   name: string;
 };
 
-export type RssSourceListItem = {
+type SourceListItemBase = {
   id: number;
   title: string;
   summary: string | null;
-  authors: RssSourceAuthor[];
+  authors: SourceAuthor[];
   url: string;
   published_at: string | null;
-  image_url: string | null;
   company_names: string[];
 };
 
-export type RssSourcePageRead = {
-  items: RssSourceListItem[];
+export type AdminSourceListItem = SourceListItemBase & {
+  image_url: string | null;
+};
+
+export type UserSourceListItem = SourceListItemBase;
+
+export type AdminSourcePageRead = {
+  items: AdminSourceListItem[];
   total: number;
   limit: number;
   offset: number;
 };
 
-export type RssSourceDetail = {
-  id: number;
-  title: string;
-  summary: string | null;
-  authors: RssSourceAuthor[];
-  url: string;
-  published_at: string | null;
-  image_url: string | null;
-  company_names: string[];
+export type UserSourcePageRead = {
+  items: UserSourceListItem[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+type SourceDetailBase = SourceListItemBase & {
   feed_sections: string[];
 };
+
+export type SourceModalDetail = SourceDetailBase & {
+  image_url?: string | null;
+};
+
+export type AdminSourceDetail = SourceModalDetail & {
+  image_url: string | null;
+};
+
+export type UserSourceDetail = SourceDetailBase;

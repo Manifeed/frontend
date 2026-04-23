@@ -1,22 +1,34 @@
-import type { AuthenticatedUser, UserRole } from "./auth";
+import type { UserRole } from "./auth";
 
-export type AdminUserRead = AuthenticatedUser;
-
-export type AdminUserListRead = {
-  items: AdminUserRead[];
+export type AdminUserListItem = {
+  id: number;
+  email: string;
+  pseudo: string;
+  role: UserRole;
+  is_active: boolean;
+  api_access_enabled: boolean;
 };
 
-export type AdminUserPatchPayload = {
+export type AdminUsersPageRead = {
+  items: AdminUserListItem[];
+  total: number;
+  active_total: number;
+  limit: number;
+  offset: number;
+};
+
+export type AdminUserUpdatePayload = {
   is_active?: boolean;
   api_access_enabled?: boolean;
 };
 
 export type AdminUserRoleFilter = "all" | UserRole;
-export type AdminUserActivityFilter = "all" | "active" | "inactive";
 export type AdminUserApiAccessFilter = "all" | "enabled" | "disabled";
+export type AdminUserStatusScope = "active" | "inactive";
 
 export type AdminUserFilters = {
+  search: string;
+  status_scope: AdminUserStatusScope;
   role: AdminUserRoleFilter;
-  is_active: AdminUserActivityFilter;
   api_access_enabled: AdminUserApiAccessFilter;
 };

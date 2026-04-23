@@ -4,6 +4,7 @@ export type AuthenticatedUser = {
   id: number;
   email: string;
   pseudo: string;
+  pp_id: number;
   role: UserRole;
   is_active: boolean;
   api_access_enabled: boolean;

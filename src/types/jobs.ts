@@ -8,25 +8,28 @@ export type WorkerJobStatus =
   | "failed";
 export type WorkerTaskStatus = "pending" | "processing" | "completed" | "failed";
 
-export type JobStatusRead = {
+export type JobOverviewItemRead = {
   job_id: string;
   job_kind: WorkerJobKind;
   status: WorkerJobStatus;
-  worker_version: string | null;
   requested_at: string;
-  started_at: string | null;
-  finished_at: string | null;
   task_total: number;
   task_processed: number;
-  item_total: number;
   item_success: number;
   item_error: number;
-  finalized_at: string | null;
 };
 
 export type JobsOverviewRead = {
   generated_at: string;
-  items: JobStatusRead[];
+  items: JobOverviewItemRead[];
+};
+
+export type JobStatusRead = JobOverviewItemRead & {
+  worker_version: string | null;
+  started_at: string | null;
+  finished_at: string | null;
+  item_total: number;
+  finalized_at: string | null;
 };
 
 export type JobTaskRead = {

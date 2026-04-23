@@ -2,6 +2,8 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--effect-elevation-soft);
+  backdrop-filter: blur(var(--effect-blur-sm));
+  z-index: 10;
 }
 
 .blur {
@@ -17,7 +19,7 @@
 }
 
 .tone_gradient {
-  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--color-ebony-100) 100%);
+  background: linear-gradient(160deg, var(--surface-panel) 0%, var(--surface-panel-soft) 100%);
 }
 
 .padding_none {

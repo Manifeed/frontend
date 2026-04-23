@@ -1,0 +1,23 @@
+.root {
+  width: 100%;
+  z-index: 109;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--border-subtle);
+  padding: var(--space-2) 0;
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--layout-content-max-wide);
+  margin: 0;
+  padding: var(--space-2) 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}

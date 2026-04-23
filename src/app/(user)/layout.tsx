@@ -1,40 +1,23 @@
 import type { ReactNode } from "react";
 
-import { UserNavbar } from "@/features/navigation/components/UserNavbar";
-import { LogoutButton } from "@/features/user/components/LogoutButton";
+import { NavbarUser } from "@/features/navigation/components/NavbarUser";
 import { getOptionalSession } from "@/lib/server/backend";
 
-import styles from "./layout.module.css";
-
-type AppLayoutProps = {
+type UserLayoutProps = {
   children: ReactNode;
 };
 
-function buildUserNavItems(apiAccessEnabled: boolean) {
-  return [
-    { href: "/profile", label: "Profile" },
-    ...(apiAccessEnabled
-      ? [
-          { href: "/workers", label: "Workers" },
-          { href: "/api-keys", label: "API Keys" },
-        ]
-      : []),
-  ];
-}
-
-export default async function AppLayout({ children }: AppLayoutProps) {
+export default async function UserLayout({ children }: UserLayoutProps) {
   const session = await getOptionalSession();
-  const apiAccessEnabled = session?.user.api_access_enabled ?? false;
+
+  if (!session) {
+    return children;
+  }
 
   return (
-    <div className={styles.shell}>
-      <UserNavbar items={buildUserNavItems(apiAccessEnabled)} />
-      {session ? (
-        <div className={styles.toolbar}>
-          <LogoutButton />
-        </div>
-      ) : null}
+    <>
+      <NavbarUser user={session.user} />
       {children}
-    </div>
+    </>
   );
 }

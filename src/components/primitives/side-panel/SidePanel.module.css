@@ -1,0 +1,47 @@
+.panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.header {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-3);
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: var(--space-4);
+}
+
+.padding_none .header,
+.padding_none .body {
+  padding: 0;
+}
+
+.padding_sm .header,
+.padding_sm .body {
+  padding: var(--space-3);
+}
+
+.padding_md .header,
+.padding_md .body {
+  padding: var(--space-4);
+}
+
+.padding_lg .header,
+.padding_lg .body {
+  padding: var(--space-5);
+}
+
+.headerless {
+  grid-template-rows: minmax(0, 1fr);
+}

@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "react";
 
-import { cx } from "../../lib/cx";
+import { cx } from "../../../utils/cx";
 import styles from "./Surface.module.css";
 
 type SurfaceTone = "default" | "soft" | "gradient";

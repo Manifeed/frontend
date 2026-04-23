@@ -1,0 +1,138 @@
+.card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	padding: var(--space-3) var(--space-4);
+	border: 1px solid var(--border-subtle);
+	border-radius: var(--radius-md);
+	background: var(--surface-panel);
+	box-shadow: var(--effect-elevation-soft);
+	overflow: hidden;
+	isolation: isolate;
+	transition:
+		transform var(--motion-duration-fast) var(--motion-easing-standard),
+		border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.card:hover {
+	border-color: var(--border-strong);
+}
+
+.card[role="button"] {
+	cursor: pointer;
+}
+
+.card:focus-visible {
+	outline: none;
+	box-shadow: var(--effect-focus-ring);
+}
+
+.card_open {
+	border-color: var(--border-strong);
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	min-width: 0;
+}
+
+.title {
+	margin: 0;
+	color: var(--text-accent);
+	font-size: var(--subtitle-b-size);
+	font-weight: var(--subtitle-b-weight);
+	line-height: var(--subtitle-b-line-height);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.meta {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.metaRow {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	min-width: 0;
+	font-size: var(--text-r-size);
+	line-height: var(--text-r-line-height);
+}
+
+.metaLabel {
+	color: var(--text-secondary-strong);
+	font-weight: var(--text-r-weight);
+	flex-shrink: 0;
+}
+
+.metaValue {
+	color: var(--text-secondary);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+.metaRow_emphasized .metaValue {
+	color: var(--text-primary);
+	font-weight: var(--text-b-weight);
+}
+
+.overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	padding: var(--space-3) var(--space-4);
+	background: var(--color-black-7);
+	backdrop-filter: blur(var(--effect-blur-sm));
+}
+
+.overlay_open {
+	display: flex;
+	flex-direction: column;
+}
+
+.overlayButton {
+	width: 100%;
+	max-width: 18rem;
+	padding: var(--space-2) var(--space-3);
+	border: 1px solid color-mix(in srgb, var(--color-white-100) 22%, transparent);
+	border-radius: var(--radius-sm);
+	background: var(--color-black-100);
+	color: var(--color-white-100);
+	font-size: var(--button-b-size);
+	font-weight: var(--button-b-weight);
+	line-height: var(--button-b-line-height);
+	cursor: pointer;
+	transition:
+		border-color var(--motion-duration-fast) var(--motion-easing-standard),
+		background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.overlayButton:hover:not(:disabled) {
+	border-color: color-mix(in srgb, var(--color-white-100) 35%, transparent);
+	background: color-mix(in srgb, var(--color-black-100) 85%, var(--color-white-100) 15%);
+}
+
+.overlayButton:focus-visible {
+	outline: none;
+	box-shadow: var(--effect-focus-ring);
+}
+
+.overlayButton:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}

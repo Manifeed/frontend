@@ -27,7 +27,7 @@
 
 .card:hover {
   border-color: var(--border-strong);
-  background: var(--color-heavenly-12);
+  background: var(--surface-accent);
   opacity: 1;
 }
 
@@ -38,8 +38,8 @@
 .cardSelected {
   opacity: 1;
   border: 3px solid;
-  border-color: var(--border-strong);
-  background: var(--color-heavenly-20);
+  border-color: var(--color-primary-100);
+  background: var(--surface-accent-strong);
   box-shadow: var(--shadow-soft);
 }
 

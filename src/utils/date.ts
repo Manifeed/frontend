@@ -8,14 +8,12 @@ type SourceDateSplit = {
 const FALLBACK_VALUE = "n/a";
 
 function parseIsoDate(isoDate: string | null): Date | null {
-  if (!isoDate) {
+  if (!isoDate)
     return null;
-  }
 
   const parsedDate = new Date(isoDate);
-  if (Number.isNaN(parsedDate.getTime())) {
+  if (Number.isNaN(parsedDate.getTime()))
     return null;
-  }
 
   return parsedDate;
 }
@@ -39,6 +37,7 @@ function formatSourceDateTime(date: Date, locale: string): string {
   return formatWithOptions(date, locale, {
     hour: "2-digit",
     minute: "2-digit",
+    second: "2-digit",
   });
 }
 
@@ -74,24 +73,17 @@ export function formatSourceDate(
 ): string | SourceDateSplit {
   const parsedDate = parseIsoDate(isoDate);
   if (!parsedDate) {
-    if (format === "split") {
+    if (format === "split")
       return { date: FALLBACK_VALUE, time: FALLBACK_VALUE };
-    }
     return FALLBACK_VALUE;
   }
 
-  if (format === "time") {
+  if (format === "time")
     return formatSourceDateTime(parsedDate, locale);
-  }
-
-  if (format === "day_month") {
+  if (format === "day_month")
     return formatSourceDateDayMonth(parsedDate, locale);
-  }
-
-  if (format === "day_month_year") {
+  if (format === "day_month_year")
     return formatSourceDateDayMonthYear(parsedDate, locale);
-  }
-
   if (format === "split") {
     return {
       date: formatSourceDateDayMonthYear(parsedDate, locale),

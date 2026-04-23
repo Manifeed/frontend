@@ -1,0 +1,232 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heroHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.heroTitleBlock {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-accent);
+  font-size: var(--subtitle-r-size);
+  font-weight: var(--subtitle-r-weight);
+  line-height: var(--subtitle-r-line-height);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.heroTitle {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--h1-weight);
+  line-height: 0.95;
+}
+
+.heroSubtitle {
+  margin: 0;
+  max-width: 38rem;
+  color: var(--text-secondary);
+  font-size: var(--text-b-size);
+  font-weight: var(--text-b-weight);
+  line-height: var(--text-b-line-height);
+}
+
+.identityCard {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.avatarBlock {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+}
+
+.avatarFrame {
+  width: min(11rem, 42vw);
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--color-primary-100) 34%, transparent 66%), transparent 60%),
+    linear-gradient(160deg, var(--surface-accent) 0%, var(--surface-panel) 100%);
+  border: 1px solid color-mix(in srgb, var(--color-primary-100) 34%, var(--border-subtle) 66%);
+  box-shadow: var(--effect-elevation-soft);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 999px;
+}
+
+.avatarHint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-r-size);
+  font-weight: var(--text-r-weight);
+  line-height: var(--text-r-line-height);
+}
+
+.identityContent {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.infoCard {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--surface-panel-soft) 85%, white 15%);
+}
+
+.infoLabel {
+  margin: 0;
+  color: var(--text-accent);
+  font-size: var(--button-r-size);
+  font-weight: var(--button-b-weight);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.infoValue {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--subtitle-b-size);
+  font-weight: var(--subtitle-b-weight);
+  line-height: var(--subtitle-b-line-height);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.modalText {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-r-size);
+  font-weight: var(--text-r-weight);
+  line-height: var(--text-r-line-height);
+}
+
+.modalForm {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.avatarModalBody {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.avatarPreview {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+}
+
+.avatarPreviewCircle {
+  width: min(10rem, 50vw);
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-primary-100) 40%, var(--border-subtle) 60%);
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--color-primary-100) 28%, transparent 72%), transparent 58%),
+    linear-gradient(160deg, var(--surface-accent) 0%, var(--surface-panel) 100%);
+}
+
+.avatarPreviewCircle img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 999px;
+}
+
+.avatarPreviewLabel {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--subtitle-r-size);
+  font-weight: var(--subtitle-r-weight);
+  line-height: var(--subtitle-r-line-height);
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.avatarChoice {
+  display: grid;
+  place-items: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-xl);
+}
+
+.avatarChoiceImage {
+  width: 100%;
+  max-width: 5rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .identityCard {
+    grid-template-columns: 1fr;
+  }
+
+  .avatarBlock {
+    justify-items: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .heroHeader {
+    align-items: flex-start;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .avatarGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

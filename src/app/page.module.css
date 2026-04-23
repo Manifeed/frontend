@@ -1,8 +1,0 @@
-.main {
-  --shell-gap: var(--space-4);
-}
-
-.panelGrid {
-  display: grid;
-  gap: var(--space-4);
-}
