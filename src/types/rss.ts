@@ -7,7 +7,7 @@ export type AdminRssCompany = {
 
 export type AdminRssFeed = {
   id: number;
-  url: string;
+  url: string | null;
   section: string | null;
   enabled: boolean;
   trust_score: number;
@@ -42,7 +42,7 @@ export type RssSyncRead = {
 
 export type RssFeedCheckResultRead = {
   feed_id: number;
-  url: string;
+  url: string | null;
   error: string;
   fetchprotection: number | null;
 };

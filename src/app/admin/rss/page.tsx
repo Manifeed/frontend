@@ -27,6 +27,7 @@ import {
   updateRssFeedEnabled,
 } from "@/services/api/rss.service";
 import type { AdminRssCompany, AdminRssFeed, RssSyncRead } from "@/types/rss";
+import { safeExternalHref } from "@/utils/public-url";
 
 import styles from "./page.module.css";
 
@@ -345,7 +346,7 @@ export default function AdminRssPage() {
       if (!normalizedQuery)
         return true;
 
-      const searchable = [feed.url, feed.section]
+      const searchable = [feed.url ?? "", feed.section]
         .filter((value): value is string => Boolean(value))
         .join(" ")
         .toLowerCase();
@@ -496,7 +497,9 @@ export default function AdminRssPage() {
                           : sectionValue.length < 30
                             ? sectionValue
                             : sectionValue.slice(0, 27) + "...";
-                      const url = feed.url.length > 70 ? feed.url.slice(0, 67) + "..." : feed.url;
+                      const safeFeedUrl = safeExternalHref(feed.url);
+                      const displayUrl = feed.url ?? "Invalid URL";
+                      const url = displayUrl.length > 70 ? displayUrl.slice(0, 67) + "..." : displayUrl;
                       const companyDisabled = feed.company?.enabled === false;
 
                       return (
@@ -510,14 +513,18 @@ export default function AdminRssPage() {
                             {feed.last_error_code ?? "-"}
                           </td>
                           <td className={styles.feedUrlCell}>
-                            <a
-                              href={feed.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={styles.feedUrlLink}
-                            >
-                              {url}
-                            </a>
+                            {safeFeedUrl ? (
+                              <a
+                                href={safeFeedUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className={styles.feedUrlLink}
+                              >
+                                {url}
+                              </a>
+                            ) : (
+                              <span>{url}</span>
+                            )}
                           </td>
                           <td
                             className={styles.feedEnabledCell}
@@ -527,7 +534,7 @@ export default function AdminRssPage() {
                               enabled={feed.enabled}
                               loading={togglingFeedIds.has(feed.id)}
                               disabled={companyDisabled}
-                              ariaLabel={`Toggle ${feed.url}`}
+                              ariaLabel={`Toggle ${displayUrl}`}
                               onChange={(nextEnabled) =>
                                 handleFeedEnabledToggle(feed.id, nextEnabled)
                               }

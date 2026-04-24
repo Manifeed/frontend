@@ -1,5 +1,6 @@
 import type { SourceAuthor, SourceModalDetail } from "@/types/sources";
 import { formatSourceDate } from "@/utils/date";
+import { safeExternalHref, safeImageSrc } from "@/utils/public-url";
 
 import { Notice } from "../../feedback/notice";
 import { Button } from "../button";
@@ -35,6 +36,8 @@ export function SourceModal({
   onAuthorSelect,
 }: SourceModalProps) {
   const publishedAt = sourceDetail ? formatSourceDate(sourceDetail.published_at, "full") : "n/a";
+  const imageSrc = safeImageSrc(sourceDetail?.image_url);
+  const articleHref = safeExternalHref(sourceDetail?.url);
 
   return (
     <Modal
@@ -54,10 +57,10 @@ export function SourceModal({
 
       {!loading && !error && sourceDetail ? (
         <article className={styles.content}>
-          {sourceDetail.image_url ? (
+          {imageSrc ? (
             <div className={styles.banner}>
               <img
-                src={sourceDetail.image_url}
+                src={imageSrc}
                 alt={sourceDetail.title}
                 loading="lazy"
                 decoding="async"
@@ -111,9 +114,11 @@ export function SourceModal({
             </section>
 
             <footer className={styles.footer}>
-              <a href={sourceDetail.url} target="_blank" rel="noreferrer" className={styles.urlLink}>
-                Open article
-              </a>
+              {articleHref ? (
+                <a href={articleHref} target="_blank" rel="noreferrer" className={styles.urlLink}>
+                  Open article
+                </a>
+              ) : null}
               <time className={styles.publishedAt} dateTime={sourceDetail.published_at ?? undefined}>
                 {publishedAt}
               </time>

@@ -1,4 +1,4 @@
-export type SourceDateFormat = "full" | "time" | "day_month" | "day_month_year" | "split";
+export type SourceDateFormat = "full" | "time" | "day_month" | "day_month_year" | "split" | "relative";
 
 type SourceDateSplit = {
   date: string;
@@ -56,6 +56,27 @@ function formatSourceDateDayMonthYear(date: Date, locale: string): string {
   });
 }
 
+function formatSourceDateRelative(date: Date, now: Date = new Date()): string {
+  const elapsedSeconds = Math.max(0, Math.floor((now.getTime() - date.getTime()) / 1000));
+  const units = [
+    { name: "year", seconds: 365 * 24 * 60 * 60 },
+    { name: "month", seconds: 30 * 24 * 60 * 60 },
+    { name: "day", seconds: 24 * 60 * 60 },
+    { name: "hour", seconds: 60 * 60 },
+    { name: "minute", seconds: 60 },
+  ];
+
+  for (const unit of units) {
+    const value = Math.floor(elapsedSeconds / unit.seconds);
+    if (value >= 1) {
+      const label = value === 1 ? unit.name : `${unit.name}s`;
+      return `${value} ${label} ago`;
+    }
+  }
+
+  return "just now";
+}
+
 export function formatSourceDate(
   isoDate: string | null,
   format: "split",
@@ -84,6 +105,8 @@ export function formatSourceDate(
     return formatSourceDateDayMonth(parsedDate, locale);
   if (format === "day_month_year")
     return formatSourceDateDayMonthYear(parsedDate, locale);
+  if (format === "relative")
+    return formatSourceDateRelative(parsedDate);
   if (format === "split") {
     return {
       date: formatSourceDateDayMonthYear(parsedDate, locale),

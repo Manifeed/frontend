@@ -4,7 +4,6 @@ import type { ApiErrorPayload } from "@/types/api";
 import type { AuthSessionRead } from "@/types/auth";
 
 const SESSION_COOKIE_NAME = "manifeed_session";
-const SESSION_HEADER_NAME = "x-manifeed-session";
 
 export class BackendRequestError extends Error {
   readonly status: number;
@@ -67,7 +66,7 @@ export async function backendRequest<T>(
   const sessionToken =
     options?.sessionToken === undefined ? await getSessionToken() : options.sessionToken;
   if (sessionToken)
-    headers.set(SESSION_HEADER_NAME, sessionToken);
+    headers.set("Cookie", `${SESSION_COOKIE_NAME}=${sessionToken}`);
 
   const response = await fetch(`${getBackendBaseUrl()}${path}`, {
     ...init,

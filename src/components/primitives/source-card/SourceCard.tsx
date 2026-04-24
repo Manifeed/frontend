@@ -1,13 +1,14 @@
 import { formatSourceDate } from "@/utils/date";
+import { safeImageSrc } from "@/utils/public-url";
 
 import styles from "./SourceCard.module.css";
 
 type SourceCardProps = {
   sourceId: number;
   title: string;
-  summary: string | null;
   imageUrl: string | null;
   companyNames: string[];
+  authors: Array<{ id: number; name: string }>;
   publishedAt: string | null;
   onClick: (sourceId: number) => void;
   className?: string;
@@ -27,17 +28,18 @@ function joinClassNames(...classes: Array<string | undefined>): string {
 export function SourceCard({
   sourceId,
   title,
-  summary,
   imageUrl,
   companyNames,
+  authors,
   publishedAt,
   onClick,
   className,
 }: SourceCardProps) {
   const displayCompanyName = getCompanyName(companyNames);
-  const publishedDate = formatSourceDate(publishedAt, "split");
-  const bannerUrl = imageUrl?.trim() ?? "";
-  const hasBanner = bannerUrl.length > 0;
+  const firstAuthor = authors[0]?.name;
+  const publishedDate = formatSourceDate(publishedAt, "relative");
+  const bannerUrl = safeImageSrc(imageUrl);
+  const hasBanner = bannerUrl !== null;
   const cardClassName = joinClassNames(
     styles.card,
     hasBanner ? styles.cardWithBanner : styles.cardWithoutBanner,
@@ -56,11 +58,10 @@ export function SourceCard({
         <p className={styles.company}>{displayCompanyName}.</p>
         <div className={styles.contentContainer}>
           <h3>{title}</h3>
-          <p className={styles.summary}>{summary ?? "No summary available."}</p>
+          {firstAuthor ? <p className={styles.author}>by {firstAuthor}</p> : null}
         </div>
         <div className={styles.publishedAt}>
-          <span>{publishedDate.date}</span>
-          <span>{publishedDate.time}</span>
+          <span>{publishedDate}</span>
         </div>
       </div>
     </button>

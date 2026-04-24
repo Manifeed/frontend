@@ -6,9 +6,8 @@ export type SourceAuthor = {
 type SourceListItemBase = {
   id: number;
   title: string;
-  summary: string | null;
   authors: SourceAuthor[];
-  url: string;
+  url: string | null;
   published_at: string | null;
   company_names: string[];
 };
@@ -34,6 +33,7 @@ export type UserSourcePageRead = {
 };
 
 type SourceDetailBase = SourceListItemBase & {
+  summary: string | null;
   feed_sections: string[];
 };
 

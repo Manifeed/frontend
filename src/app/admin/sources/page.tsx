@@ -21,6 +21,7 @@ import type {
 	AdminSourcePageRead,
 	SourceAuthor,
 } from "@/types/sources";
+import { safeImageSrc } from "@/utils/public-url";
 
 import styles from "./page.module.css";
 
@@ -46,7 +47,7 @@ function getFeedLabel(feed: AdminRssFeed): string {
 }
 
 function hasBannerImage(imageUrl: string | null): boolean {
-	return (imageUrl?.trim().length ?? 0) > 0;
+	return safeImageSrc(imageUrl) !== null;
 }
 
 export default function AdminSourcesPage() {
@@ -461,9 +462,9 @@ export default function AdminSourcesPage() {
 										key={source.id}
 										sourceId={source.id}
 										title={source.title}
-										summary={source.summary}
 										imageUrl={source.image_url}
 										companyNames={source.company_names}
+										authors={source.authors}
 										publishedAt={source.published_at}
 										onClick={handleTileClick}
 									/>

@@ -155,9 +155,9 @@ export default function SourcesPage() {
                 key={source.id}
                 sourceId={source.id}
                 title={source.title}
-                summary={source.summary}
                 imageUrl={null}
                 companyNames={source.company_names}
+                authors={source.authors}
                 publishedAt={source.published_at}
                 onClick={setSelectedSourceId}
               />

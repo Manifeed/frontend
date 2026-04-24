@@ -1,5 +1,6 @@
 import { apiRequest } from "@/services/api/client";
 import type {
+  JobAutomationRead,
   JobEnqueueRead,
   JobsOverviewRead,
   JobStatusRead,
@@ -35,5 +36,16 @@ export async function createSourceEmbeddingJob(
     body: JSON.stringify({
       reembed_model_mismatches: reembedModelMismatches,
     }),
+  });
+}
+
+export async function getJobAutomation(): Promise<JobAutomationRead> {
+  return apiRequest<JobAutomationRead>("/api/admin/jobs/automation");
+}
+
+export async function updateJobAutomation(enabled: boolean): Promise<JobAutomationRead> {
+  return apiRequest<JobAutomationRead>("/api/admin/jobs/automation", {
+    method: "PATCH",
+    body: JSON.stringify({ enabled }),
   });
 }

@@ -51,3 +51,19 @@ export type JobEnqueueRead = {
   tasks_total: number;
   items_total: number;
 };
+
+export type JobAutomationRead = {
+  enabled: boolean;
+  interval_minutes: number;
+  status: string;
+  message: string;
+  connected_workers: number;
+  connected_rss_workers: number;
+  connected_embedding_workers: number;
+  last_cycle_started_at: string | null;
+  next_run_at: string | null;
+  current_ingest_job_id: string | null;
+  current_ingest_status: string | null;
+  current_embed_job_id: string | null;
+  current_embed_status: string | null;
+};

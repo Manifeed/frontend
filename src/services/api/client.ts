@@ -94,10 +94,24 @@ function buildRequestHeaders(init?: RequestInit): Headers {
   return headers;
 }
 
+function resolveApiRequestUrl(path: string): string {
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  const configuredBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  if (configuredBaseUrl) {
+    return `${configuredBaseUrl.replace(/\/+$/, "")}${path}`;
+  }
+
+  return path;
+}
+
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
+  const requestUrl = resolveApiRequestUrl(path);
+  const response = await fetch(requestUrl, {
     ...init,
-    credentials: "same-origin",
+    credentials: /^https?:\/\//i.test(requestUrl) ? "include" : "same-origin",
     headers: buildRequestHeaders(init),
   });
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { CSSProperties, ReactNode } from "react";
+import { headers } from "next/headers";
 
 import "./globals.css";
 
@@ -18,6 +19,9 @@ const rootStyle = {
 } as CSSProperties;
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  // Force dynamic document rendering so Next can propagate CSP nonces.
+  headers();
+
   return (
     <html lang="en" style={rootStyle}>
       <head>

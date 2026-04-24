@@ -32,3 +32,10 @@ export type AdminUserFilters = {
   role: AdminUserRoleFilter;
   api_access_enabled: AdminUserApiAccessFilter;
 };
+
+export type AdminStatsRead = {
+  connected_users: number;
+  total_users: number;
+  connected_workers: number;
+  total_sources: number;
+};
