@@ -6,9 +6,23 @@ export function resolveDefaultHome(role: UserRole): string {
 }
 
 export function normalizeNextPath(nextValue: string | null): string | null {
-  if (nextValue && nextValue.startsWith("/"))
-    return nextValue;
-  return null;
+  if (!nextValue || !nextValue.startsWith("/") || nextValue.startsWith("//")) {
+    return null;
+  }
+
+  if (nextValue.includes("\\") || /[\u0000-\u001f\u007f]/u.test(nextValue)) {
+    return null;
+  }
+
+  try {
+    const parsedUrl = new URL(nextValue, "https://manifeed.local");
+    if (parsedUrl.origin !== "https://manifeed.local") {
+      return null;
+    }
+    return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+  } catch {
+    return null;
+  }
 }
 
 export function buildLoginHref(nextValue: string | null): string {

@@ -1,5 +1,10 @@
 import { buildLoginHref } from "@/lib/auth/redirects";
-import type { ApiErrorPayload } from "@/types/api";
+
+import {
+  buildJsonRequestHeaders,
+  getApiPayloadMessage,
+  parseApiResponsePayload,
+} from "./response";
 
 export class ApiRequestError extends Error {
   readonly status: number;
@@ -53,47 +58,6 @@ function handleBrowserApiFailure(status: number): void {
   }
 }
 
-function getPayloadMessage(payload: unknown): string | null {
-  if (!payload || typeof payload !== "object") {
-    return null;
-  }
-
-  const typedPayload = payload as ApiErrorPayload;
-  if (typeof typedPayload.message === "string") {
-    return typedPayload.message;
-  }
-
-  if (typeof typedPayload.detail === "string") {
-    return typedPayload.detail;
-  }
-
-  return null;
-}
-
-async function parseResponsePayload(response: Response): Promise<unknown> {
-  const contentType = response.headers.get("content-type") ?? "";
-
-  if (contentType.includes("application/json")) {
-    try {
-      return await response.json();
-    } catch {
-      return null;
-    }
-  }
-
-  const text = await response.text();
-  return text.length > 0 ? { message: text } : null;
-}
-
-function buildRequestHeaders(init?: RequestInit): Headers {
-  const headers = new Headers(init?.headers);
-  if (init?.body && !headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
-  }
-
-  return headers;
-}
-
 function resolveApiRequestUrl(path: string): string {
   if (/^https?:\/\//i.test(path)) {
     return path;
@@ -109,17 +73,23 @@ function resolveApiRequestUrl(path: string): string {
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const requestUrl = resolveApiRequestUrl(path);
+  const headers = buildJsonRequestHeaders(init);
+  const method = init?.method?.toUpperCase() ?? "GET";
+  if (method !== "GET" && method !== "HEAD" && !headers.has("X-Requested-With")) {
+    headers.set("X-Requested-With", "XMLHttpRequest");
+  }
+
   const response = await fetch(requestUrl, {
     ...init,
     credentials: /^https?:\/\//i.test(requestUrl) ? "include" : "same-origin",
-    headers: buildRequestHeaders(init),
+    headers,
   });
 
-  const payload = await parseResponsePayload(response);
+  const payload = await parseApiResponsePayload(response);
 
   if (!response.ok) {
     handleBrowserApiFailure(response.status);
-    const message = getPayloadMessage(payload) ?? `Request failed with status ${response.status}`;
+    const message = getApiPayloadMessage(payload) ?? `Request failed with status ${response.status}`;
     throw new ApiRequestError(message, response.status, payload);
   }
 

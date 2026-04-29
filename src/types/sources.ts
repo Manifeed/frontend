@@ -46,3 +46,14 @@ export type AdminSourceDetail = SourceModalDetail & {
 };
 
 export type UserSourceDetail = SourceDetailBase;
+
+export type SimilarSourceRead = {
+  score: number;
+  source: UserSourceDetail;
+};
+
+export type SimilarSourcesRead = {
+  source_id: number;
+  worker_version: string;
+  items: SimilarSourceRead[];
+};

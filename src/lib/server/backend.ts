@@ -1,6 +1,10 @@
 import { cookies } from "next/headers";
 
-import type { ApiErrorPayload } from "@/types/api";
+import {
+  buildJsonRequestHeaders,
+  getApiPayloadMessage,
+  parseApiResponsePayload,
+} from "@/services/api/response";
 import type { AuthSessionRead } from "@/types/auth";
 
 const SESSION_COOKIE_NAME = "manifeed_session";
@@ -24,34 +28,8 @@ function getBackendBaseUrl(): string {
   return value.replace(/\/+$/, "");
 }
 
-function getPayloadMessage(payload: unknown): string | null {
-  if (!payload || typeof payload !== "object")
-    return null;
-
-  const typedPayload = payload as ApiErrorPayload;
-  if (typeof typedPayload.message === "string")
-    return typedPayload.message;
-  if (typeof typedPayload.detail === "string")
-    return typedPayload.detail;
-  return null;
-}
-
-async function parsePayload(response: Response): Promise<unknown> {
-  const contentType = response.headers.get("content-type") ?? "";
-  if (contentType.includes("application/json")) {
-    try {
-      return await response.json();
-    } catch {
-      return null;
-    }
-  }
-
-  const text = await response.text();
-  return text.length > 0 ? { message: text } : null;
-}
-
 export async function getSessionToken(): Promise<string | null> {
-  return cookies().get(SESSION_COOKIE_NAME)?.value ?? null;
+  return (await cookies()).get(SESSION_COOKIE_NAME)?.value ?? null;
 }
 
 export async function backendRequest<T>(
@@ -59,9 +37,7 @@ export async function backendRequest<T>(
   init?: RequestInit,
   options?: { sessionToken?: string | null },
 ): Promise<T> {
-  const headers = new Headers(init?.headers);
-  if (init?.body && !headers.has("Content-Type"))
-    headers.set("Content-Type", "application/json");
+  const headers = buildJsonRequestHeaders(init);
 
   const sessionToken =
     options?.sessionToken === undefined ? await getSessionToken() : options.sessionToken;
@@ -73,11 +49,11 @@ export async function backendRequest<T>(
     headers,
     cache: "no-store",
   });
-  const payload = await parsePayload(response);
+  const payload = await parseApiResponsePayload(response);
 
   if (!response.ok) {
     throw new BackendRequestError(
-      getPayloadMessage(payload) ?? `Backend request failed with status ${response.status}`,
+      getApiPayloadMessage(payload) ?? `Backend request failed with status ${response.status}`,
       response.status,
       payload,
     );

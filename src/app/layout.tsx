@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { headers } from "next/headers";
 
 import "./globals.css";
@@ -13,34 +13,14 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
-const rootStyle = {
-  "--font-body": '"Space Grotesk"',
-  "--font-heading": '"Liberation Serif"',
-} as CSSProperties;
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
   // Force dynamic document rendering so Next can propagate CSP nonces.
-  headers();
+  await headers();
 
   return (
-    <html lang="en" style={rootStyle}>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="stylesheet" href="/fonts/fonts.css" />
-        <link
-          rel="preload"
-          href="/fonts/SpaceGrotesk-VariableFont_wght.ttf"
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/LiberationSerif-Bold.ttf"
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
       </head>
       <body>{children}</body>
     </html>

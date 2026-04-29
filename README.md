@@ -38,5 +38,5 @@ yarn start
 ## Place dans le multi-repo
 
 - `../infra` fournit la stack Docker locale et expose `BACKEND_INTERNAL_URL_ADMIN`.
-- `../api` stocke `openapi.json`, la source de verite publiee pour le contrat backend.
+- `../public_api` expose le contrat HTTP public consomme par le frontend.
 - `src/types/` reste pour l'instant la projection locale des contrats cote frontend.

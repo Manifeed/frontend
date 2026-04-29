@@ -58,10 +58,10 @@ export function SourceCard({
         <p className={styles.company}>{displayCompanyName}.</p>
         <div className={styles.contentContainer}>
           <h3>{title}</h3>
-          {firstAuthor ? <p className={styles.author}>by {firstAuthor}</p> : null}
         </div>
         <div className={styles.publishedAt}>
           <span>{publishedDate}</span>
+          {firstAuthor ? <span className={styles.author}>by {firstAuthor}</span> : null}
         </div>
       </div>
     </button>
