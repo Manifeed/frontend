@@ -16,13 +16,18 @@ import {
 } from "@/components";
 import type { PopInfoType } from "@/components";
 import {
+	cancelJob,
 	createRssScrapeJob,
+	deleteJob,
 	createSourceEmbeddingJob,
 	getJobsOverview,
 	getJobStatus,
 	getJobTasks,
+	pauseJob,
+	resumeJob,
 } from "@/services/api/jobs.service";
 import type {
+	JobControlCommandRead,
 	JobEnqueueRead,
 	JobOverviewItemRead,
 	JobsOverviewRead,
@@ -55,6 +60,7 @@ type PopInfoState = {
 	type: PopInfoType;
 };
 
+type JobControlAction = "pause" | "resume" | "cancel" | "delete";
 type StatusTone = "neutral" | "accent" | "success" | "warning" | "danger";
 
 function createTaskState<T>(): TaskState<T> {
@@ -76,6 +82,17 @@ function formatJobEnqueueSummary(result: JobEnqueueRead): string {
 	].join(" | ");
 }
 
+function formatJobControlSummary(result: JobStatusRead | JobControlCommandRead): string {
+	const base = [`job=${result.job_id.slice(0, 8)}`];
+	if ("status" in result && result.status) {
+		base.push(`status=${result.status}`);
+	}
+	if ("deleted" in result && result.deleted) {
+		base.push("deleted=true");
+	}
+	return base.join(" | ");
+}
+
 function formatInteger(value: number | null): string {
 	if (value === null) {
 		return "n/a";
@@ -89,12 +106,16 @@ function jobStatusLabel(status: WorkerJobStatus): string {
 			return "Queued";
 		case "processing":
 			return "Processing";
+		case "paused":
+			return "Paused";
 		case "finalizing":
 			return "Finalizing";
+		case "cancelled":
+			return "Cancelled";
 		case "completed":
 			return "Completed";
 		case "completed_with_errors":
-			return "Completed";
+			return "Completed with errors";
 		case "failed":
 			return "Failed";
 		default:
@@ -108,6 +129,8 @@ function taskStatusLabel(status: WorkerTaskStatus): string {
 			return "Pending";
 		case "processing":
 			return "Processing";
+		case "cancelled":
+			return "Cancelled";
 		case "completed":
 			return "Completed";
 		case "failed":
@@ -121,8 +144,12 @@ function statusTone(status: WorkerJobStatus): StatusTone {
 	switch (status) {
 		case "processing":
 			return "accent";
+		case "paused":
+			return "warning";
 		case "finalizing":
 			return "warning";
+		case "cancelled":
+			return "danger";
 		case "completed":
 			return "success";
 		case "completed_with_errors":
@@ -138,6 +165,8 @@ function taskTone(status: WorkerTaskStatus): StatusTone {
 	switch (status) {
 		case "processing":
 			return "accent";
+		case "cancelled":
+			return "warning";
 		case "completed":
 			return "success";
 		case "failed":
@@ -158,6 +187,7 @@ export default function AdminJobsPage() {
 	const [jobStatus, setJobStatus] = useState<JobStatusRead | null>(null);
 	const [ingestingSources, setIngestingSources] = useState<boolean>(false);
 	const [embeddingSources, setEmbeddingSources] = useState<boolean>(false);
+	const [activeJobControl, setActiveJobControl] = useState<JobControlAction | null>(null);
 	const [jobStatusError, setJobStatusError] = useState<string | null>(null);
 	const [taskPage, setTaskPage] = useState<TaskState<JobTaskRead>>(() => createTaskState<JobTaskRead>());
 
@@ -335,6 +365,68 @@ export default function AdminJobsPage() {
 		return null;
 	}, [jobStatus, selectedJobId]);
 
+	const handleJobControl = useCallback(
+		async (action: JobControlAction) => {
+			if (!selectedJob)
+				return;
+
+			const { job_id: jobId } = selectedJob;
+			if (action === "cancel") {
+				const confirmed = window.confirm(
+					`Cancel job ${jobId}? Pending and processing tasks will be stopped.`,
+				);
+				if (!confirmed)
+					return;
+			}
+			if (action === "delete") {
+				const confirmed = window.confirm(
+					`Delete job ${jobId} permanently? This also removes its tasks.`,
+				);
+				if (!confirmed)
+					return;
+			}
+
+			setActiveJobControl(action);
+			try {
+				if (action === "pause") {
+					const payload = await pauseJob(jobId);
+					setJobStatus(payload);
+					await Promise.all([loadOverview(true), loadTasks(jobId)]);
+					showPopInfo("Job paused", formatJobControlSummary(payload), "info");
+					return;
+				}
+				if (action === "resume") {
+					const payload = await resumeJob(jobId);
+					setJobStatus(payload);
+					await Promise.all([loadOverview(true), loadTasks(jobId)]);
+					showPopInfo("Job resumed", formatJobControlSummary(payload), "info");
+					return;
+				}
+				if (action === "cancel") {
+					const payload = await cancelJob(jobId);
+					setJobStatus(payload);
+					await Promise.all([loadOverview(true), loadTasks(jobId)]);
+					showPopInfo("Job cancelled", formatJobControlSummary(payload), "alert");
+					return;
+				}
+
+				const payload = await deleteJob(jobId);
+				setSelectedJobId(null);
+				setJobStatus(null);
+				setTaskPage(createTaskState<JobTaskRead>());
+				await loadOverview(true);
+				showPopInfo("Job deleted", formatJobControlSummary(payload), "alert");
+			} catch (error) {
+				const message =
+					error instanceof Error ? error.message : "Unexpected error while controlling job";
+				showPopInfo("Job control error", message, "alert");
+			} finally {
+				setActiveJobControl(null);
+			}
+		},
+		[loadOverview, loadTasks, selectedJob, showPopInfo],
+	);
+
 	useEffect(() => {
 		if (!selectedJobId || !selectedJobOverview)
 			return;
@@ -356,6 +448,15 @@ export default function AdminJobsPage() {
 			window.clearInterval(timerId);
 		};
 	}, [loadJobStatus, loadTasks, selectedJobId, taskPage.initialized]);
+
+	const canPauseSelectedJob = selectedJob?.status === "queued" || selectedJob?.status === "processing";
+	const canResumeSelectedJob = selectedJob?.status === "paused";
+	const canCancelSelectedJob =
+		selectedJob?.status === "queued" ||
+		selectedJob?.status === "processing" ||
+		selectedJob?.status === "paused" ||
+		selectedJob?.status === "finalizing";
+	const isControllingJob = activeJobControl !== null;
 
 	return (
 		<>
@@ -452,6 +553,50 @@ export default function AdminJobsPage() {
 							header={
 								<>
 									<header className={styles.panelHeader}>
+										<div className={styles.jobDetailHeader}>
+											<div className={styles.jobDetailMeta}>
+												<div className={styles.jobDetailTitleRow}>
+													<h3 className={styles.jobDetailTitle}>{selectedJob.job_id}</h3>
+													<Badge tone={statusTone(selectedJob.status)} style="minimal">
+														{jobStatusLabel(selectedJob.status)}
+													</Badge>
+												</div>
+												<p className={styles.jobDetailSummary}>
+													{selectedJob.job_kind} · {formatInteger(selectedJob.task_processed)} / {formatInteger(selectedJob.task_total)} tasks · {formatInteger(selectedJob.item_success)} ok / {formatInteger(selectedJob.item_error)} err
+												</p>
+											</div>
+											<div className={styles.jobControlActions}>
+												<Button
+													size="sm"
+													onClick={() => void handleJobControl("pause")}
+													disabled={!canPauseSelectedJob || isControllingJob}
+												>
+													{activeJobControl === "pause" ? "Pausing..." : "Pause"}
+												</Button>
+												<Button
+													size="sm"
+													onClick={() => void handleJobControl("resume")}
+													disabled={!canResumeSelectedJob || isControllingJob}
+												>
+													{activeJobControl === "resume" ? "Resuming..." : "Resume"}
+												</Button>
+												<Button
+													size="sm"
+													onClick={() => void handleJobControl("cancel")}
+													disabled={!canCancelSelectedJob || isControllingJob}
+												>
+													{activeJobControl === "cancel" ? "Cancelling..." : "Cancel"}
+												</Button>
+												<Button
+													size="sm"
+													variant="ghost"
+													onClick={() => void handleJobControl("delete")}
+													disabled={isControllingJob}
+												>
+													{activeJobControl === "delete" ? "Deleting..." : "Delete"}
+												</Button>
+											</div>
+										</div>
 										<div className={styles.kpiGrid}>
 											<article className={styles.kpiCard}>
 												<p className={styles.kpiLabel}>Requested</p>
