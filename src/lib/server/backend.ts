@@ -53,7 +53,8 @@ export async function backendRequest<T>(
 
   if (!response.ok) {
     throw new BackendRequestError(
-      getApiPayloadMessage(payload) ?? `Backend request failed with status ${response.status}`,
+      getApiPayloadMessage(payload, response.status) ??
+        `Backend request failed with status ${response.status}`,
       response.status,
       payload,
     );
