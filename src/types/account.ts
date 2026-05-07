@@ -1,8 +1,8 @@
 import type { AuthenticatedUser } from "./auth";
 
-export type WorkerTypeKind = "rss_scrapper" | "source_embedding";
-export type WorkerInstallComponent = "rss" | "embedding";
-export type WorkerReleaseFamily = "desktop" | "rss" | "embedding";
+export type WorkerTypeKind = "rss_scrapper";
+export type WorkerInstallComponent = "rss";
+export type WorkerReleaseFamily = "desktop" | "rss";
 export type WorkerArtifactKind =
   | "desktop_app"
   | "deb_package"

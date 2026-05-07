@@ -610,10 +610,12 @@ export default function AdminJobsPage() {
 												<p className={styles.kpiLabel}>Finished</p>
 												<p className={styles.kpiValue}>{formatSourceDate(selectedJob.finished_at, "time")}</p>
 											</article>
-											<article className={styles.kpiCard}>
-												<p className={styles.kpiLabel}>Worker version</p>
-												<p className={styles.kpiValue}>{selectedJob.worker_version}</p>
-											</article>
+											{selectedJob.worker_version ? (
+												<article className={styles.kpiCard}>
+													<p className={styles.kpiLabel}>Worker version</p>
+													<p className={styles.kpiValue}>{selectedJob.worker_version}</p>
+												</article>
+											) : null}
 										</div>
 									</header>
 									{taskPage.error ? <Notice tone="danger">{taskPage.error}</Notice> : null}

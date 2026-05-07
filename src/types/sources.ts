@@ -32,6 +32,15 @@ export type UserSourcePageRead = {
   offset: number;
 };
 
+export type SourceSearchMatchedBy = "sparse" | "dense";
+
+export type AppliedSearchFilter = {
+  field: "language" | "publisher_id" | "author_id" | "published_from" | "published_to";
+  value: number | string;
+  label: string;
+  source: "explicit" | "inferred";
+};
+
 type SourceDetailBase = SourceListItemBase & {
   summary: string | null;
   feed_sections: string[];
@@ -47,6 +56,21 @@ export type AdminSourceDetail = SourceModalDetail & {
 
 export type UserSourceDetail = SourceDetailBase;
 
+export type UserSourceSearchItem = SourceDetailBase & {
+  score: number;
+  matched_by: SourceSearchMatchedBy[];
+};
+
+export type UserSourceSearchPageRead = {
+  raw_query: string;
+  subject_query: string;
+  applied_filters: AppliedSearchFilter[];
+  items: UserSourceSearchItem[];
+  limit: number;
+  offset: number;
+  has_more: boolean;
+};
+
 export type SimilarSourceRead = {
   score: number;
   source: UserSourceDetail;
@@ -54,6 +78,6 @@ export type SimilarSourceRead = {
 
 export type SimilarSourcesRead = {
   source_id: number;
-  worker_version: string;
+  model_name: string;
   items: SimilarSourceRead[];
 };

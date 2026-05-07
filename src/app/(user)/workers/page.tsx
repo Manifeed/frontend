@@ -79,7 +79,7 @@ export default async function WorkersPage() {
               <p className={styles.eyebrow}>{featuredRelease.platform_label}</p>
               <h2 className={styles.title}>{featuredRelease.title}</h2>
               <p className={styles.description}>
-                Download the desktop app, then install, update and remove RSS or Embedding
+                Download the desktop app, then install, update and remove the RSS worker
                 directly from the desktop interface. Worker bundles keep using backend-provided
                 releases.
               </p>
@@ -119,7 +119,7 @@ export default async function WorkersPage() {
             <h3 className={styles.cardTitle}>More Desktop Variants</h3>
             <p className={styles.description}>
               Linux ships as a single desktop package. After installing the app, use the desktop
-              catalogue to download and manage RSS and Embedding workers independently.
+              catalogue to download and manage the RSS worker.
             </p>
 
             <div className={styles.packageGrid}>
@@ -133,7 +133,7 @@ export default async function WorkersPage() {
                   <p className={styles.eyebrow}>{release.platform_label}</p>
                   <h4 className={styles.cardTitle}>{release.title}</h4>
                   <p className={styles.description}>
-                    Install one package, launch `manifeed-workers`, then manage RSS and Embedding
+                    Install one package, launch `manifeed-workers`, then manage RSS
                     from the desktop UI.
                   </p>
                   <div className={styles.actions}>
@@ -158,7 +158,7 @@ export default async function WorkersPage() {
                     <pre className={styles.command}>{release.install_command}</pre>
                   ) : null}
                   <p className={styles.note}>
-                    The desktop app downloads worker bundles itself. RSS and Embedding bundles
+                    The desktop app downloads worker bundles itself. RSS bundles
                     remain protected and require valid worker API keys inside the desktop app.
                   </p>
                 </Surface>
