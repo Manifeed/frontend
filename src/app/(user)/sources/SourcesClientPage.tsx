@@ -9,6 +9,7 @@ import {
   Notice,
   PageShell,
   SearchBar,
+  SelectInput,
   SourceModal,
   TextInput,
 } from "@/components";
@@ -31,35 +32,37 @@ import styles from "./page.module.css";
 const PAGE_SIZE = 24;
 
 type SearchFilters = {
-  language: string;
-  publisherId: string;
+  country: string;
+  companyId: string;
   authorId: string;
-  publishedFrom: string;
-  publishedTo: string;
+  period: string;
 };
 
 type DisplaySource = UserSourceListItem | UserSourceSearchItem;
 
 const EMPTY_FILTERS: SearchFilters = {
-  language: "",
-  publisherId: "",
+  country: "",
+  companyId: "",
   authorId: "",
-  publishedFrom: "",
-  publishedTo: "",
+  period: "all",
 };
 
 function readFilters(params: URLSearchParams): SearchFilters {
   return {
-    language: params.get("language") ?? "",
-    publisherId: params.get("publisherId") ?? params.get("publisher_id") ?? "",
+    country: params.get("country") ?? "",
+    companyId: params.get("companyId") ?? params.get("company_id") ?? "",
     authorId: params.get("authorId") ?? params.get("author_id") ?? "",
-    publishedFrom: params.get("publishedFrom") ?? params.get("published_from") ?? "",
-    publishedTo: params.get("publishedTo") ?? params.get("published_to") ?? "",
+    period: params.get("period") ?? "all",
   };
 }
 
 function hasActiveFilters(filters: SearchFilters): boolean {
-  return Object.values(filters).some((value) => value.trim().length > 0);
+  return (
+    filters.country.trim().length > 0
+    || filters.companyId.trim().length > 0
+    || filters.authorId.trim().length > 0
+    || filters.period !== "all"
+  );
 }
 
 function toPositiveNumber(value: string): number | undefined {
@@ -72,11 +75,6 @@ function toPositiveNumber(value: string): number | undefined {
 
 function isSearchItem(source: DisplaySource): source is UserSourceSearchItem {
   return "score" in source;
-}
-
-function getFilterValue(filters: AppliedSearchFilter[], field: AppliedSearchFilter["field"]): string {
-  const value = filters.find((filter) => filter.field === field)?.value;
-  return value === undefined || value === null ? "" : String(value);
 }
 
 function buildResultLabel(itemCount: number, isSearchActive: boolean): string {
@@ -117,20 +115,17 @@ export function SourcesClientPage() {
     if (nextQuery.trim()) {
       nextParams.set("q", nextQuery.trim());
     }
-    if (nextFilters.language.trim()) {
-      nextParams.set("language", nextFilters.language.trim());
+    if (nextFilters.country.trim()) {
+      nextParams.set("country", nextFilters.country.trim());
     }
-    if (nextFilters.publisherId.trim()) {
-      nextParams.set("publisherId", nextFilters.publisherId.trim());
+    if (nextFilters.companyId.trim()) {
+      nextParams.set("companyId", nextFilters.companyId.trim());
     }
     if (nextFilters.authorId.trim()) {
       nextParams.set("authorId", nextFilters.authorId.trim());
     }
-    if (nextFilters.publishedFrom.trim()) {
-      nextParams.set("publishedFrom", nextFilters.publishedFrom.trim());
-    }
-    if (nextFilters.publishedTo.trim()) {
-      nextParams.set("publishedTo", nextFilters.publishedTo.trim());
+    if (nextFilters.period !== "all") {
+      nextParams.set("period", nextFilters.period);
     }
     const href = nextParams.toString() ? `${pathname}?${nextParams.toString()}` : pathname;
     if (`${pathname}${searchSignature ? `?${searchSignature}` : ""}` !== href) {
@@ -161,11 +156,10 @@ export function SourcesClientPage() {
           q: nextQuery,
           limit: PAGE_SIZE,
           offset,
-          language: nextFilters.language || undefined,
-          publisherId: toPositiveNumber(nextFilters.publisherId),
+          country: nextFilters.country || undefined,
+          companyId: toPositiveNumber(nextFilters.companyId),
           authorId: toPositiveNumber(nextFilters.authorId),
-          publishedFrom: nextFilters.publishedFrom || undefined,
-          publishedTo: nextFilters.publishedTo || undefined,
+          period: nextFilters.period,
         });
         if (serial !== requestSerial.current) {
           return;
@@ -173,9 +167,6 @@ export function SourcesClientPage() {
         setItems((currentItems) => (append ? [...currentItems, ...payload.items] : payload.items));
         setAppliedFilters(payload.applied_filters);
         setHasMore(payload.has_more);
-        if (!append) {
-          canonicalizeSearch(payload.subject_query, payload.applied_filters, nextQuery, nextFilters);
-        }
       } else {
         const payload = await listUserSources({ limit: PAGE_SIZE, offset });
         if (serial !== requestSerial.current) {
@@ -196,33 +187,6 @@ export function SourcesClientPage() {
         setLoadingSources(false);
         setLoadingMore(false);
       }
-    }
-  }
-
-  function canonicalizeSearch(
-    subjectQuery: string,
-    backendFilters: AppliedSearchFilter[],
-    currentQuery: string,
-    currentFilters: SearchFilters,
-  ) {
-    const canonicalFilters: SearchFilters = {
-      language: getFilterValue(backendFilters, "language"),
-      publisherId: getFilterValue(backendFilters, "publisher_id"),
-      authorId: getFilterValue(backendFilters, "author_id"),
-      publishedFrom: getFilterValue(backendFilters, "published_from"),
-      publishedTo: getFilterValue(backendFilters, "published_to"),
-    };
-    const nextQuery = subjectQuery.trim();
-    const changed =
-      nextQuery !== currentQuery.trim()
-      || canonicalFilters.language !== currentFilters.language
-      || canonicalFilters.publisherId !== currentFilters.publisherId
-      || canonicalFilters.authorId !== currentFilters.authorId
-      || canonicalFilters.publishedFrom !== currentFilters.publishedFrom
-      || canonicalFilters.publishedTo !== currentFilters.publishedTo;
-
-    if (changed) {
-      replaceUrl(nextQuery, canonicalFilters);
     }
   }
 
@@ -296,11 +260,10 @@ export function SourcesClientPage() {
   function removeAppliedFilter(field: AppliedSearchFilter["field"]) {
     const nextFilters = {
       ...filters,
-      ...(field === "language" ? { language: "" } : {}),
-      ...(field === "publisher_id" ? { publisherId: "" } : {}),
+      ...(field === "country" ? { country: "" } : {}),
+      ...(field === "company_id" ? { companyId: "" } : {}),
       ...(field === "author_id" ? { authorId: "" } : {}),
-      ...(field === "published_from" ? { publishedFrom: "" } : {}),
-      ...(field === "published_to" ? { publishedTo: "" } : {}),
+      ...(field === "published_period" ? { period: "all" } : {}),
     };
     setFilters(nextFilters);
     setCommittedQuery(draftQuery);
@@ -341,33 +304,29 @@ export function SourcesClientPage() {
         />
 
         <div className={styles.filterGrid}>
-          <Field label="Language" htmlFor="source-language" labelTone="regular">
+          <Field label="Country" htmlFor="source-country" labelTone="regular">
             <TextInput
-              id="source-language"
+              id="source-country"
               appearance="subtle"
-              value={filters.language}
+              value={filters.country}
               placeholder="fr"
-              maxLength={16}
-              onChange={(event) => updateFilter("language", event.target.value)}
+              maxLength={2}
+              onChange={(event) => updateFilter("country", event.target.value)}
             />
           </Field>
-          <Field label="From" htmlFor="source-from" labelTone="regular">
-            <TextInput
-              id="source-from"
-              appearance="subtle"
-              type="date"
-              value={filters.publishedFrom.slice(0, 10)}
-              onChange={(event) => updateFilter("publishedFrom", event.target.value)}
-            />
-          </Field>
-          <Field label="To" htmlFor="source-to" labelTone="regular">
-            <TextInput
-              id="source-to"
-              appearance="subtle"
-              type="date"
-              value={filters.publishedTo.slice(0, 10)}
-              onChange={(event) => updateFilter("publishedTo", event.target.value)}
-            />
+          <Field label="Period" htmlFor="source-period" labelTone="regular">
+            <SelectInput
+              id="source-period"
+              value={filters.period}
+              onChange={(event) => updateFilter("period", event.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="1h">1h</option>
+              <option value="24h">24h</option>
+              <option value="7d">7D</option>
+              <option value="1m">1M</option>
+              <option value="1y">1Y</option>
+            </SelectInput>
           </Field>
         </div>
 

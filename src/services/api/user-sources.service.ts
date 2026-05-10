@@ -15,11 +15,10 @@ export type SearchUserSourcesParams = {
   q?: string;
   limit?: number;
   offset?: number;
-  language?: string;
-  publisherId?: number;
+  country?: string;
+  companyId?: number;
   authorId?: number;
-  publishedFrom?: string;
-  publishedTo?: string;
+  period?: string;
 };
 
 function buildListUserSourcesPath(params?: ListUserSourcesParams): string {
@@ -47,20 +46,17 @@ function buildSearchUserSourcesPath(params?: SearchUserSourcesParams): string {
   if (params?.q?.trim()) {
     searchParams.set("q", params.q.trim());
   }
-  if (params?.language?.trim()) {
-    searchParams.set("language", params.language.trim());
+  if (params?.country?.trim()) {
+    searchParams.set("country", params.country.trim());
   }
-  if (params?.publisherId) {
-    searchParams.set("publisher_id", String(params.publisherId));
+  if (params?.companyId) {
+    searchParams.set("company_id", String(params.companyId));
   }
   if (params?.authorId) {
     searchParams.set("author_id", String(params.authorId));
   }
-  if (params?.publishedFrom?.trim()) {
-    searchParams.set("published_from", params.publishedFrom.trim());
-  }
-  if (params?.publishedTo?.trim()) {
-    searchParams.set("published_to", params.publishedTo.trim());
+  if (params?.period?.trim() && params.period.trim() !== "all") {
+    searchParams.set("period", params.period.trim());
   }
 
   return `/api/sources/search?${searchParams.toString()}`;

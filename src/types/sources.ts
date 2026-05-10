@@ -32,13 +32,13 @@ export type UserSourcePageRead = {
   offset: number;
 };
 
-export type SourceSearchMatchedBy = "sparse" | "dense";
+export type SourceSearchMatchedBy = "lexical" | "sparse" | "dense";
 
 export type AppliedSearchFilter = {
-  field: "language" | "publisher_id" | "author_id" | "published_from" | "published_to";
+  field: "country" | "company_id" | "author_id" | "published_period";
   value: number | string;
   label: string;
-  source: "explicit" | "inferred";
+  source: "explicit";
 };
 
 type SourceDetailBase = SourceListItemBase & {
