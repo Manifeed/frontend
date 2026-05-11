@@ -3,12 +3,6 @@
   gap: var(--space-4);
 }
 
-.grid {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
-}
-
 .hero {
   display: grid;
   gap: var(--space-3);
@@ -24,83 +18,115 @@
 
 .title {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+  line-height: 1.15;
 }
 
-.description {
+.tagline {
   margin: 0;
   color: var(--text-secondary);
+  font-size: 1rem;
 }
 
-.meta {
+.metaRow {
   display: flex;
-  gap: var(--space-3);
   flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.githubLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.16));
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.githubLink:hover {
+  border-color: var(--surface-border-strong, rgba(255, 255, 255, 0.3));
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.releaseBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-panel-soft);
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.12));
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  text-decoration: none;
 }
 
-.actions {
+a.releaseBadge:hover {
+  color: var(--text-primary);
+  border-color: var(--surface-border-strong, rgba(255, 255, 255, 0.22));
+}
+
+.releaseTag {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.releaseDate {
+  opacity: 0.75;
+}
+
+.steps {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.step {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.stepHeader {
   display: flex;
+  align-items: center;
   gap: var(--space-3);
-  flex-wrap: wrap;
 }
 
-.primaryLink,
-.secondaryLink {
+.stepIndex {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 var(--space-4);
-  border-radius: var(--radius-pill);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.primaryLink {
-  background: var(--color-heavenly-100);
-  color: var(--text-on-accent);
-}
-
-.secondaryLink {
-  border: 1px solid var(--border-strong);
-  color: var(--text-primary);
-}
-
-.cardTitle {
-  margin: 0 0 var(--space-3);
-}
-
-.note {
-  margin: var(--space-3) 0 0;
-  color: var(--text-secondary);
-}
-
-.command {
-  margin: var(--space-3) 0 0;
-  padding: var(--space-3);
-  overflow-x: auto;
-  border-radius: var(--radius-md);
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
   background: var(--surface-panel-soft);
-  white-space: pre-wrap;
-  word-break: break-word;
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.16));
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
-.packageGrid {
+.stepText {
   display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  margin-top: var(--space-4);
+  gap: 0.15rem;
 }
 
-.packageCard {
-  display: grid;
-  gap: var(--space-3);
+.stepTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
 }
 
-@media (max-width: 900px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.stepCaption {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
