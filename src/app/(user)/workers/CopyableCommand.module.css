@@ -1,0 +1,61 @@
+.box {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel-soft);
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.08));
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.command {
+  flex: 1 1 auto;
+  align-self: center;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-primary);
+}
+
+.copy {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--surface-border, rgba(255, 255, 255, 0.12));
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.copy:hover {
+  color: var(--text-primary);
+  border-color: var(--surface-border-strong, rgba(255, 255, 255, 0.22));
+}
+
+.copy:focus-visible {
+  outline: 2px solid var(--focus-ring, rgba(120, 170, 255, 0.6));
+  outline-offset: 2px;
+}
+
+.box[data-copied] .copy {
+  color: var(--success-text, #5bd394);
+  border-color: var(--success-text, #5bd394);
+}
+
+.copyLabel {
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 480px) {
+  .copyLabel {
+    display: none;
+  }
+}

@@ -2,6 +2,7 @@ const backendBaseUrl = (process.env.BACKEND_INTERNAL_URL ?? "").trim().replace(/
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   async rewrites() {
     if (!backendBaseUrl) {
       return [];

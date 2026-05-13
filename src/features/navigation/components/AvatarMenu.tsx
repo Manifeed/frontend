@@ -4,33 +4,19 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
+import { getApiPayloadMessage, parseApiResponsePayload } from "@/services/api/response";
 import type { AuthenticatedUser } from "@/types/auth";
 
 import styles from "./AvatarMenu.module.css";
-
-type LogoutErrorPayload = {
-  message?: string;
-  detail?: string;
-};
 
 type AvatarMenuProps = {
   user: AuthenticatedUser;
 };
 
 async function parseLogoutError(response: Response): Promise<string> {
-  const contentType = response.headers.get("content-type") ?? "";
-  if (contentType.includes("application/json")) {
-    try {
-      const payload = (await response.json()) as LogoutErrorPayload;
-      return payload.message ?? payload.detail ?? "Unable to sign out";
-    } catch {
-      return "Unable to sign out";
-    }
-  }
-
   try {
-    const text = await response.text();
-    return text || "Unable to sign out";
+    const payload = await parseApiResponsePayload(response);
+    return getApiPayloadMessage(payload, response.status) ?? "Unable to sign out";
   } catch {
     return "Unable to sign out";
   }

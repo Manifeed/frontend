@@ -11,9 +11,7 @@ import styles from "./page.module.css";
 export default function ApiKeysPage() {
   const [keys, setKeys] = useState<UserApiKeyListRead["items"]>([]);
   const [label, setLabel] = useState("");
-  const [workerType, setWorkerType] = useState<"rss_scrapper" | "source_embedding">(
-    "rss_scrapper",
-  );
+  const [workerType, setWorkerType] = useState<"rss_scrapper">("rss_scrapper");
   const [error, setError] = useState<string | null>(null);
   const [createdSecret, setCreatedSecret] = useState<string | null>(null);
 
@@ -81,12 +79,9 @@ export default function ApiKeysPage() {
               <SelectInput
                 id="api-key-worker-type"
                 value={workerType}
-                onChange={(event) =>
-                  setWorkerType(event.target.value as "rss_scrapper" | "source_embedding")
-                }
+                onChange={(event) => setWorkerType(event.target.value as "rss_scrapper")}
               >
                 <option value="rss_scrapper">RSS worker</option>
-                <option value="source_embedding">Embedding worker</option>
               </SelectInput>
             </Field>
             <Button type="submit" variant="primary">

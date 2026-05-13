@@ -154,10 +154,6 @@ export default function AdminPage() {
                   <span>RSS workers</span>
                   <strong>{formatInteger(automation?.connected_rss_workers)}</strong>
                 </article>
-                <article className={styles.metaBlock}>
-                  <span>Embedding workers</span>
-                  <strong>{formatInteger(automation?.connected_embedding_workers)}</strong>
-                </article>
               </div>
             </Surface>
           </aside>

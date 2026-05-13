@@ -66,11 +66,13 @@ const STATUS_ORDER: Record<string, number> = {
   pending: 10,
   queued: 20,
   processing: 30,
-  finalizing: 40,
-  completed: 50,
-  "completed with errors": 60,
-  completed_with_errors: 60,
-  failed: 70,
+  paused: 40,
+  finalizing: 50,
+  cancelled: 60,
+  completed: 70,
+  "completed with errors": 80,
+  completed_with_errors: 80,
+  failed: 90,
 };
 
 const EMPTY_VALUES = new Set(["", "n/a", "na", "null", "undefined", "-"]);

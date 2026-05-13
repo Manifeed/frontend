@@ -1,6 +1,7 @@
 import { apiRequest } from "@/services/api/client";
 import type {
   JobAutomationRead,
+  JobControlCommandRead,
   JobEnqueueRead,
   JobsOverviewRead,
   JobStatusRead,
@@ -47,5 +48,29 @@ export async function updateJobAutomation(enabled: boolean): Promise<JobAutomati
   return apiRequest<JobAutomationRead>("/api/admin/jobs/automation", {
     method: "PATCH",
     body: JSON.stringify({ enabled }),
+  });
+}
+
+export async function pauseJob(jobId: string): Promise<JobStatusRead> {
+  return apiRequest<JobStatusRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}/pause`, {
+    method: "POST",
+  });
+}
+
+export async function resumeJob(jobId: string): Promise<JobStatusRead> {
+  return apiRequest<JobStatusRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}/resume`, {
+    method: "POST",
+  });
+}
+
+export async function cancelJob(jobId: string): Promise<JobStatusRead> {
+  return apiRequest<JobStatusRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}/cancel`, {
+    method: "POST",
+  });
+}
+
+export async function deleteJob(jobId: string): Promise<JobControlCommandRead> {
+  return apiRequest<JobControlCommandRead>(`/api/admin/jobs/${encodeURIComponent(jobId)}`, {
+    method: "DELETE",
   });
 }

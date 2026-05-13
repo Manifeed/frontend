@@ -2,11 +2,13 @@ export type WorkerJobKind = "rss_scrape" | "source_embedding";
 export type WorkerJobStatus =
   | "queued"
   | "processing"
+  | "paused"
   | "finalizing"
+  | "cancelled"
   | "completed"
   | "completed_with_errors"
   | "failed";
-export type WorkerTaskStatus = "pending" | "processing" | "completed" | "failed";
+export type WorkerTaskStatus = "pending" | "processing" | "cancelled" | "completed" | "failed";
 
 export type JobOverviewItemRead = {
   job_id: string;
@@ -66,4 +68,11 @@ export type JobAutomationRead = {
   current_ingest_status: string | null;
   current_embed_job_id: string | null;
   current_embed_status: string | null;
+};
+
+export type JobControlCommandRead = {
+  ok: boolean;
+  job_id: string;
+  status: WorkerJobStatus | null;
+  deleted: boolean;
 };

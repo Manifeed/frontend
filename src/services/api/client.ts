@@ -89,7 +89,8 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
 
   if (!response.ok) {
     handleBrowserApiFailure(response.status);
-    const message = getApiPayloadMessage(payload) ?? `Request failed with status ${response.status}`;
+    const message =
+      getApiPayloadMessage(payload, response.status) ?? `Request failed with status ${response.status}`;
     throw new ApiRequestError(message, response.status, payload);
   }
 
