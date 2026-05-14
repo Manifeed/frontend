@@ -15,7 +15,7 @@ publiques canoniques que le navigateur :
 - `/api/auth/*`
 - `/api/account/*`
 - `/api/admin/*`
-- `/workers/api/releases/desktop`
+- `/workers/api/*`
 
 Le navigateur passe par l'edge Nginx expose par `../infra`, sans rewrite applicatif.
 
