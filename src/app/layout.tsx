@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { headers } from "next/headers";
 
 import "./globals.css";
 
@@ -13,10 +12,7 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
-export default async function RootLayout({ children }: RootLayoutProps) {
-  // Force dynamic document rendering so Next can propagate CSP nonces.
-  await headers();
-
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <head>

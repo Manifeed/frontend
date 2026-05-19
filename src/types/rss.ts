@@ -39,12 +39,3 @@ export type RssSyncRead = {
   companies_removed: number;
   feeds_removed: number;
 };
-
-export type RssFeedCheckResultRead = {
-  feed_id: number;
-  url: string | null;
-  error: string;
-  fetchprotection: number | null;
-};
-
-export type RssFeedCheckRead = RssFeedCheckResultRead[];

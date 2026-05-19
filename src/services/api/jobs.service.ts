@@ -20,22 +20,20 @@ export async function getJobTasks(jobId: string): Promise<JobTaskRead[]> {
   return apiRequest<JobTaskRead[]>(`/api/admin/jobs/${encodeURIComponent(jobId)}/tasks`);
 }
 
-export async function createRssScrapeJob(feedIds?: number[]): Promise<JobEnqueueRead> {
+export async function createRssScrapeJob(): Promise<JobEnqueueRead> {
   return apiRequest<JobEnqueueRead>("/api/admin/jobs/rss-scrape", {
     method: "POST",
     body: JSON.stringify({
-      feed_ids: feedIds ?? [],
+      feed_ids: [],
     }),
   });
 }
 
-export async function createSourceEmbeddingJob(
-  reembedModelMismatches: boolean = false,
-): Promise<JobEnqueueRead> {
+export async function createSourceEmbeddingJob(): Promise<JobEnqueueRead> {
   return apiRequest<JobEnqueueRead>("/api/admin/jobs/source-embedding", {
     method: "POST",
     body: JSON.stringify({
-      reembed_model_mismatches: reembedModelMismatches,
+      reembed_model_mismatches: false,
     }),
   });
 }

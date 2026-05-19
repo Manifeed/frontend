@@ -70,14 +70,3 @@ export type UserSourceSearchPageRead = {
   offset: number;
   has_more: boolean;
 };
-
-export type SimilarSourceRead = {
-  score: number;
-  source: UserSourceDetail;
-};
-
-export type SimilarSourcesRead = {
-  source_id: number;
-  model_name: string;
-  items: SimilarSourceRead[];
-};

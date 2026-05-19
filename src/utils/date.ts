@@ -1,9 +1,4 @@
-export type SourceDateFormat = "full" | "time" | "day_month" | "day_month_year" | "split" | "relative";
-
-type SourceDateSplit = {
-  date: string;
-  time: string;
-};
+export type SourceDateFormat = "full" | "time" | "day_month_year" | "relative";
 
 const FALLBACK_VALUE = "n/a";
 
@@ -41,13 +36,6 @@ function formatSourceDateTime(date: Date, locale: string): string {
   });
 }
 
-function formatSourceDateDayMonth(date: Date, locale: string): string {
-  return formatWithOptions(date, locale, {
-    day: "numeric",
-    month: "numeric",
-  });
-}
-
 function formatSourceDateDayMonthYear(date: Date, locale: string): string {
   return formatWithOptions(date, locale, {
     day: "2-digit",
@@ -79,40 +67,19 @@ function formatSourceDateRelative(date: Date, now: Date = new Date()): string {
 
 export function formatSourceDate(
   isoDate: string | null,
-  format: "split",
-  locale?: string,
-): SourceDateSplit;
-export function formatSourceDate(
-  isoDate: string | null,
-  format?: Exclude<SourceDateFormat, "split">,
-  locale?: string,
-): string;
-export function formatSourceDate(
-  isoDate: string | null,
   format: SourceDateFormat = "full",
   locale: string = "fr-FR",
-): string | SourceDateSplit {
+): string {
   const parsedDate = parseIsoDate(isoDate);
-  if (!parsedDate) {
-    if (format === "split")
-      return { date: FALLBACK_VALUE, time: FALLBACK_VALUE };
+  if (!parsedDate)
     return FALLBACK_VALUE;
-  }
 
   if (format === "time")
     return formatSourceDateTime(parsedDate, locale);
-  if (format === "day_month")
-    return formatSourceDateDayMonth(parsedDate, locale);
   if (format === "day_month_year")
     return formatSourceDateDayMonthYear(parsedDate, locale);
   if (format === "relative")
     return formatSourceDateRelative(parsedDate);
-  if (format === "split") {
-    return {
-      date: formatSourceDateDayMonthYear(parsedDate, locale),
-      time: formatSourceDateTime(parsedDate, locale),
-    };
-  }
 
   return formatSourceDateFull(parsedDate, locale);
 }

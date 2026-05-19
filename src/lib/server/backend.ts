@@ -28,11 +28,11 @@ function getBackendBaseUrl(): string {
   return value.replace(/\/+$/, "");
 }
 
-export async function getSessionToken(): Promise<string | null> {
+async function getSessionToken(): Promise<string | null> {
   return (await cookies()).get(SESSION_COOKIE_NAME)?.value ?? null;
 }
 
-export async function backendRequest<T>(
+async function backendRequest<T>(
   path: string,
   init?: RequestInit,
   options?: { sessionToken?: string | null },

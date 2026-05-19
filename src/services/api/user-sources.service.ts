@@ -1,6 +1,5 @@
 import { apiRequest } from "@/services/api/client";
 import type {
-  SimilarSourcesRead,
   UserSourceDetail,
   UserSourcePageRead,
   UserSourceSearchPageRead,
@@ -70,16 +69,4 @@ export async function searchUserSources(
 
 export async function getUserSourceById(sourceId: number): Promise<UserSourceDetail> {
   return apiRequest<UserSourceDetail>(`/api/sources/${sourceId}`);
-}
-
-export async function getSimilarSources(
-  sourceId: number,
-  params?: { limit?: number },
-): Promise<SimilarSourcesRead> {
-  const searchParams = new URLSearchParams({
-    limit: String(params?.limit ?? 10),
-  });
-  return apiRequest<SimilarSourcesRead>(
-    `/api/sources/${sourceId}/similar?${searchParams.toString()}`,
-  );
 }
